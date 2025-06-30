@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Properties | DreamHome{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-primary to-purple-600 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6">Browse Our Properties</h1>
+        <p class="text-lg max-w-2xl mx-auto">Find your perfect home from our extensive collection of houses, apartments, lands, and commercial properties.</p>
+    </div>
+</section>
+
+<!-- Property Filters -->
+<section class="bg-white py-8 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex flex-col md:flex-row justify-between items-center">
+            <div class="mb-4 md:mb-0">
+                <h3 class="text-lg font-medium text-dark">125 Properties Found</h3>
+            </div>
+            <div class="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 w-full md:w-auto">
+                <select class="px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option>Sort by: Default</option>
+                    <option>Price: Low to High</option>
+                    <option>Price: High to Low</option>
+                    <option>Newest First</option>
+                    <option>Oldest First</option>
+                </select>
+                <div class="flex">
+                    <button class="px-4 py-2 border rounded-l-lg bg-primary text-white">
+                        <i class="fas fa-th-large"></i>
+                    </button>
+                    <button class="px-4 py-2 border rounded-r-lg">
+                        <i class="fas fa-list"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Property Listings -->
+<section class="py-12 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Property 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$320,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Cozy Family Home</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Austin, TX</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>3 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>2 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>1,800 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/4" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1605276374104-dee2a0ed3cd6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium">For Rent</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$2,500/mo</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Downtown Loft</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Chicago, IL</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>1 Bed</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>1 Bath</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>850 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/5" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1600585152220-90363fe7e115?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$750,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Luxury Condo</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Miami, FL</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>2 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>2.5 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>1,600 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/6" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 4 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$150,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Vacant Land</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Phoenix, AZ</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-ruler-combined text-primary mr-2"></i>
+                            <span>1.5 Acres</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-tint text-primary mr-2"></i>
+                            <span>Water Available</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-road text-primary mr-2"></i>
+                            <span>Road Access</span>
+                        </div>
+                    </div>
+                    <a href="/property/7" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 5 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium">For Rent</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$3,800/mo</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Modern Townhouse</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Seattle, WA</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>3 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>2.5 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>2,100 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/8" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 6 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1605146769289-440113cc3d00?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$2,100,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Luxury Estate</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Beverly Hills, CA</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>6 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>5.5 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>6,500 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/9" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination -->
+        <div class="mt-12 flex justify-center">
+            <nav class="flex items-center space-x-2">
+                <a href="#" class="px-4 py-2 border rounded-lg text-primary border-primary hover:bg-primary hover:text-white">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+                <a href="#" class="px-4 py-2 border rounded-lg bg-primary text-white">1</a>
+                <a href="#" class="px-4 py-2 border rounded-lg hover:bg-gray-100">2</a>
+                <a href="#" class="px-4 py-2 border rounded-lg hover:bg-gray-100">3</a>
+                <a href="#" class="px-4 py-2 border rounded-lg hover:bg-gray-100">4</a>
+                <a href="#" class="px-4 py-2 border rounded-lg hover:bg-gray-100">5</a>
+                <a href="#" class="px-4 py-2 border rounded-lg text-primary border-primary hover:bg-primary hover:text-white">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            </nav>
+        </div>
+    </div>
+</section>
+
+<!-- Property Types -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-serif font-bold text-dark mb-4">Explore by Property Type</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Find exactly what you're looking for by browsing our property categories</p>
+        </div>
+        
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+            <a href="#" class="bg-gray-50 p-6 rounded-xl text-center hover:shadow-md transition-shadow duration-300">
+                <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-home text-primary text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-dark mb-2">Houses</h3>
+                <p class="text-gray-600 text-sm">235 Properties</p>
+            </a>
+            
+            <a href="#" class="bg-gray-50 p-6 rounded-xl text-center hover:shadow-md transition-shadow duration-300">
+                <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-building text-primary text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-dark mb-2">Apartments</h3>
+                <p class="text-gray-600 text-sm">189 Properties</p>
+            </a>
+            
+            <a href="#" class="bg-gray-50 p-6 rounded-xl text-center hover:shadow-md transition-shadow duration-300">
+                <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-warehouse text-primary text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-dark mb-2">Commercial</h3>
+                <p class="text-gray-600 text-sm">87 Properties</p>
+            </a>
+            
+            <a href="#" class="bg-gray-50 p-6 rounded-xl text-center hover:shadow-md transition-shadow duration-300">
+                <div class="bg-primary bg-opacity-10 w-16 h-16 rounded-full flex items-center justify-center mb-4 mx-auto">
+                    <i class="fas fa-tree text-primary text-2xl"></i>
+                </div>
+                <h3 class="font-bold text-dark mb-2">Land</h3>
+                <p class="text-gray-600 text-sm">142 Properties</p>
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
