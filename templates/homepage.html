@@ -1,0 +1,302 @@
+{% extends "base.html" %}
+
+{% block title %}Find Your Dream Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="relative bg-gradient-to-r from-primary to-purple-600 text-white py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="md:flex items-center justify-between">
+            <div class="md:w-1/2 mb-10 md:mb-0">
+                <h1 class="text-4xl md:text-5xl font-serif font-bold mb-6">Find Your Perfect <span class="text-accent">Dream Home</span></h1>
+                <p class="text-lg mb-8">Discover the best properties across the country. Whether you're looking for a cozy apartment or a luxurious villa, we have it all.</p>
+                <div class="flex space-x-4">
+                    <a href="/properties" class="bg-accent text-dark hover:bg-yellow-500 px-6 py-3 rounded-lg font-medium">Browse Properties</a>
+                    <a href="#" class="border-2 border-white text-white hover:bg-white hover:text-dark px-6 py-3 rounded-lg font-medium">Learn More</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 relative">
+                <img src="https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Luxury Home" class="rounded-lg shadow-2xl transform rotate-2">
+                <div class="absolute -bottom-6 -left-6 bg-white p-4 rounded-lg shadow-lg w-64">
+                    <div class="flex items-center">
+                        <div class="bg-primary p-3 rounded-full mr-3">
+                            <i class="fas fa-home text-white"></i>
+                        </div>
+                        <div>
+                            <p class="text-gray-500 text-sm">Properties Listed</p>
+                            <p class="text-dark font-bold text-xl">1,250+</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="bg-white py-8 shadow-lg -mt-10 mx-4 rounded-lg relative z-10 max-w-7xl mx-auto">
+    <div class="px-6">
+        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Location</label>
+                <div class="relative">
+                    <input type="text" placeholder="City, State" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <i class="fas fa-map-marker-alt absolute right-3 top-3 text-gray-400"></i>
+                </div>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Property Type</label>
+                <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option>All Types</option>
+                    <option>House</option>
+                    <option>Apartment</option>
+                    <option>Villa</option>
+                    <option>Land</option>
+                    <option>Commercial</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 text-sm font-bold mb-2">Price Range</label>
+                <select class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option>Any Price</option>
+                    <option>$50,000 - $100,000</option>
+                    <option>$100,000 - $200,000</option>
+                    <option>$200,000 - $500,000</option>
+                    <option>$500,000+</option>
+                </select>
+            </div>
+            <div class="flex items-end">
+                <button class="bg-primary hover:bg-purple-700 text-white px-6 py-3 rounded-lg w-full font-medium">
+                    <i class="fas fa-search mr-2"></i> Search
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Properties -->
+<section class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-serif font-bold text-dark mb-4">Featured Properties</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Explore our handpicked selection of premium properties that match your lifestyle</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Property 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1580587771525-78b9dba3b914?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$450,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Luxury Villa in Beverly Hills</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Beverly Hills, CA</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>4 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>3 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>2,500 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/1" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 2 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-secondary text-white px-3 py-1 rounded-full text-sm font-medium">For Rent</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$3,200/mo</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Modern Apartment Downtown</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> New York, NY</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>2 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>2 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>1,200 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/2" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+            
+            <!-- Property 3 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+                <div class="relative">
+                    <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80" alt="Property" class="w-full h-64 object-cover">
+                    <div class="absolute top-4 right-4 bg-primary text-white px-3 py-1 rounded-full text-sm font-medium">For Sale</div>
+                    <div class="absolute bottom-4 left-4 bg-white text-dark px-3 py-1 rounded-full text-sm font-medium">$1,200,000</div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-serif font-bold mb-2">Ocean View Mansion</h3>
+                    <p class="text-gray-600 mb-4"><i class="fas fa-map-marker-alt text-primary mr-2"></i> Malibu, CA</p>
+                    <div class="flex justify-between border-b border-gray-200 pb-4 mb-4">
+                        <div class="flex items-center">
+                            <i class="fas fa-bed text-primary mr-2"></i>
+                            <span>5 Beds</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-bath text-primary mr-2"></i>
+                            <span>4 Baths</span>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-vector-square text-primary mr-2"></i>
+                            <span>4,500 sqft</span>
+                        </div>
+                    </div>
+                    <a href="/property/3" class="block text-center bg-primary hover:bg-purple-700 text-white px-4 py-2 rounded-lg font-medium transition-colors duration-300">View Details</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="/properties" class="inline-block bg-white border-2 border-primary text-primary hover:bg-primary hover:text-white px-8 py-3 rounded-lg font-medium transition-colors duration-300">
+                View All Properties <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-16 bg-gradient-to-r from-dark to-gray-800 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-serif font-bold mb-4">Why Choose DreamHome Realty?</h2>
+            <p class="text-gray-300 max-w-2xl mx-auto">We're committed to providing exceptional service and finding the perfect home for you</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm">
+                <div class="bg-primary w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-home text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4 text-center">Extensive Property Listings</h3>
+                <p class="text-gray-300 text-center">Access to thousands of properties across the country with detailed information and high-quality images.</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm">
+                <div class="bg-secondary w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-user-tie text-white text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4 text-center">Expert Agents</h3>
+                <p class="text-gray-300 text-center">Our experienced agents will guide you through every step of the buying or renting process.</p>
+            </div>
+            
+            <div class="bg-white bg-opacity-10 p-8 rounded-xl backdrop-blur-sm">
+                <div class="bg-accent w-16 h-16 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-hand-holding-usd text-dark text-2xl"></i>
+                </div>
+                <h3 class="text-xl font-serif font-bold mb-4 text-center">Best Prices</h3>
+                <p class="text-gray-300 text-center">We negotiate the best deals for our clients and ensure you get the most value for your money.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Testimonials -->
+<section class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-serif font-bold text-dark mb-4">What Our Clients Say</h2>
+            <p class="text-gray-600 max-w-2xl mx-auto">Hear from our satisfied customers about their experience with DreamHome Realty</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <div class="bg-gray-50 p-8 rounded-xl">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Client" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Sarah Johnson</h4>
+                        <p class="text-gray-600 text-sm">Home Buyer</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"DreamHome helped me find my perfect house in just two weeks! Their agents were knowledgeable and patient with all my questions."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-8 rounded-xl">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Client" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Michael Chen</h4>
+                        <p class="text-gray-600 text-sm">Property Investor</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"As an investor, I appreciate DreamHome's extensive network and market insights. They've helped me build a profitable portfolio."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                </div>
+            </div>
+            
+            <div class="bg-gray-50 p-8 rounded-xl">
+                <div class="flex items-center mb-4">
+                    <div class="w-12 h-12 rounded-full overflow-hidden mr-4">
+                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Client" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <h4 class="font-bold">Emily Rodriguez</h4>
+                        <p class="text-gray-600 text-sm">First-time Buyer</p>
+                    </div>
+                </div>
+                <p class="text-gray-700 mb-4">"The team made my first home buying experience stress-free. They explained everything clearly and found properties within my budget."</p>
+                <div class="flex text-yellow-400">
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star"></i>
+                    <i class="fas fa-star-half-alt"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Call to Action -->
+<section class="py-16 bg-gradient-to-r from-primary to-purple-600 text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-serif font-bold mb-6">Ready to Find Your Dream Home?</h2>
+        <p class="text-xl mb-8 max-w-3xl mx-auto">Join thousands of satisfied clients who found their perfect property with DreamHome Realty</p>
+        <div class="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="/properties" class="bg-white text-primary hover:bg-gray-100 px-8 py-3 rounded-lg font-medium transition-colors duration-300">
+                Browse Properties
+            </a>
+            <a href="/register" class="bg-accent text-dark hover:bg-yellow-500 px-8 py-3 rounded-lg font-medium transition-colors duration-300">
+                Create Account
+            </a>
+        </div>
+    </div>
+</section>
+{% endblock %}
