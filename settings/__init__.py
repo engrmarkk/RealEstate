@@ -3,6 +3,8 @@ from configs import app_configs
 from constants import CONFIG_NAME
 from routes.authentication import authentication_blp
 from routes.users import users_blp
+from routes.admin import admin_blp
+from routes.errors import error_blp
 from extensions import login_manager, db, migrate
 from models import (
     Users,
@@ -23,6 +25,7 @@ from models import (
     Transaction,
     PropertyPurchased,
 )
+from middlewares import register_middlewares
 
 
 app = Flask(__name__)
@@ -30,6 +33,8 @@ app = Flask(__name__)
 
 def create_app(config_name=CONFIG_NAME):
     app.config.from_object(app_configs[config_name])
+
+    register_middlewares(app)
 
     login_manager.init_app(app)
     db.init_app(app)
@@ -49,6 +54,13 @@ def create_app(config_name=CONFIG_NAME):
         """
         return render_template("error_pages/500.html"), 500
 
+    # 404
+    @app.errorhandler(404)
+    def page_not_found(e):
+        return render_template("error_pages/404.html"), 404
+
     app.register_blueprint(authentication_blp)
     app.register_blueprint(users_blp)
+    app.register_blueprint(admin_blp, url_prefix="/admin")
+    app.register_blueprint(error_blp, url_prefix="/error")
     return app
