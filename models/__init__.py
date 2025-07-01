@@ -1,7 +1,13 @@
 from .user import UserProfile, Users
 from .agent import Agent, CommissionRateChange, CommissionRecord
 from .interactions import Favorite, Tour, Inquiry
-from .property import Property, HouseDetails, LandDetails, PropertyImages, PropertyPurchased
+from .property import (
+    Property,
+    HouseDetails,
+    LandDetails,
+    PropertyImages,
+    PropertyPurchased,
+)
 from .system import Newsletter, PropertyView, Contact
 from .transactions import Transaction
 
