@@ -6,7 +6,7 @@ from utils.util import (
     session_alert_bg_color,
     validate_fullname,
     validate_password,
-    save_name_email_pass
+    save_name_email_pass,
 )
 from flask_login import login_user, login_required, logout_user
 
@@ -58,9 +58,15 @@ def register():
             print("user created")
             session_alert_bg_color("Registration successful, please login", "green")
             return redirect(url_for("authentication_blp.login"))
-        return render_template("register.html", alert=alert, bg_color=bg_color,
-                               name=name, email=email, password=password,
-                               confirm_password=confirm_password)
+        return render_template(
+            "register.html",
+            alert=alert,
+            bg_color=bg_color,
+            name=name,
+            email=email,
+            password=password,
+            confirm_password=confirm_password,
+        )
     except Exception as e:
         print(e, "register error")
         return render_template("register.html")
@@ -69,23 +75,30 @@ def register():
 @authentication_blp.route("/login", methods=["GET", "POST"])
 def login():
     alert, bg_color = session_alert_bg_color()
+    _, email, password, _ = save_name_email_pass(get=True)
     if request.method == "POST":
         email = request.form.get("email")
         password = request.form.get("password")
         email_res = validate_correct_email(email)
         if not email_res[0]:
             session_alert_bg_color(email_res[1])
+            save_name_email_pass(email=email, password=password)
             return redirect(url_for("authentication_blp.login"))
         email = email_res[1]
         user = get_user_by_email(email)
         if user and user.check_password(password):
             login_user(user, remember=True)
             session_alert_bg_color(f"Welcome, {user.user_profile.first_name}", "green")
+            if user.is_admin:
+                return redirect(url_for("admin_blp.dashboard"))
             return redirect(url_for("users_blp.homepage"))
         else:
             session_alert_bg_color("Invalid email or password")
+            save_name_email_pass(email=email, password=password)
             return redirect(url_for("authentication_blp.login"))
-    return render_template("login.html", alert=alert, bg_color=bg_color)
+    return render_template(
+        "login.html", alert=alert, bg_color=bg_color, email=email, password=password
+    )
 
 
 @authentication_blp.route("/logout")
