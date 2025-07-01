@@ -19,7 +19,6 @@ class Property(db.Model, UserMixin):
     address = db.Column(db.String(255))
     state = db.Column(db.String(50))
     city = db.Column(db.String(50))
-    zip_code = db.Column(db.String(10))
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -43,7 +42,6 @@ class Property(db.Model, UserMixin):
         Index("ix_property_address", "address"),
         Index("ix_property_state", "state"),
         Index("ix_property_city", "city"),
-        Index("ix_property_zip_code", "zip_code"),
     )
 
 
@@ -92,9 +90,10 @@ class PropertyPurchased(db.Model, UserMixin):
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
-    __table_args__ = (db.UniqueConstraint("property_id", "user_id"),
-                      Index("ix_property_purchased_created_at", "created_at"),
-                      Index("ix_property_purchased_updated_at", "updated_at"),
-                      Index("ix_property_purchased_property_id", "property_id"),
-                      Index("ix_property_purchased_user_id", "user_id"))
-
+    __table_args__ = (
+        db.UniqueConstraint("property_id", "user_id"),
+        Index("ix_property_purchased_created_at", "created_at"),
+        Index("ix_property_purchased_updated_at", "updated_at"),
+        Index("ix_property_purchased_property_id", "property_id"),
+        Index("ix_property_purchased_user_id", "user_id"),
+    )
