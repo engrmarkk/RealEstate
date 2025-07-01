@@ -92,7 +92,9 @@ def format_datetime(date_time):
     return date_time.strftime("%d-%b-%Y")
 
 
-def save_name_email_pass(name="", email="", password="", confirm_password="", get=False):
+def save_name_email_pass(
+    name="", email="", password="", confirm_password="", get=False
+):
     if get:
         name = session.pop("name", "")
         email = session.pop("email", "")
