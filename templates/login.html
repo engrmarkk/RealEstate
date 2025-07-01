@@ -18,14 +18,14 @@
             <div class="mb-6">
                 <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
                 <div class="relative">
-                    <input type="email" id="email" name="email" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="you@example.com">
+                    <input type="email" id="email" name="email" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="you@example.com" value="{{ email }}">
                 </div>
             </div>
             
             <div class="mb-6">
                 <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
                 <div class="relative">
-                    <input type="password" id="password" name="password" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••">
+                    <input type="password" id="password" name="password" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" value="{{ password }}">
                     <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
                         <i class="fas fa-eye"></i>
                     </button>
@@ -54,6 +54,7 @@
 
 {% block scripts %}
 <script>
+window.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const submitBtn = document.getElementById('submitBtn');
@@ -80,26 +81,34 @@
     emailInput.addEventListener('input', validateForm);
     passwordInput.addEventListener('input', validateForm);
 
-    clientBtn.addEventListener('click', () => {
-        userTypeInput.value = 'client';
-        clientBtn.classList.add('active');
-        agentBtn.classList.remove('active');
-    });
+    if (clientBtn && agentBtn && userTypeInput) {
+        clientBtn.addEventListener('click', () => {
+            userTypeInput.value = 'client';
+            clientBtn.classList.add('active');
+            agentBtn.classList.remove('active');
+        });
 
-    agentBtn.addEventListener('click', () => {
-        userTypeInput.value = 'agent';
-        agentBtn.classList.add('active');
-        clientBtn.classList.remove('active');
-    });
+        agentBtn.addEventListener('click', () => {
+            userTypeInput.value = 'agent';
+            agentBtn.classList.add('active');
+            clientBtn.classList.remove('active');
+        });
+    }
 
-    togglePasswordBtn.addEventListener('click', () => {
-        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
-        passwordInput.setAttribute('type', type);
-        togglePasswordBtn.querySelector('i').classList.toggle('fa-eye');
-        togglePasswordBtn.querySelector('i').classList.toggle('fa-eye-slash');
-    });
+    if (togglePasswordBtn && passwordInput) {
+        togglePasswordBtn.addEventListener('click', function() {
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            const icon = togglePasswordBtn.querySelector('i');
+            if (icon) {
+                icon.classList.toggle('fa-eye');
+                icon.classList.toggle('fa-eye-slash');
+            }
+        });
+    }
 
     // Initial validation check
     validateForm();
+});
 </script>
 {% endblock %}
