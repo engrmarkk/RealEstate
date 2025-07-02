@@ -11,9 +11,10 @@ def generate_db_id():
 
 # generate agent code
 def generate_agent_code():
-    return "".join(
-        random.choice(string.ascii_uppercase + string.digits) for _ in range(6)
+    gen_code = "".join(
+        random.choice(string.ascii_uppercase + string.digits) for _ in range(8)
     )
+    return f"AGENT-{gen_code}"
 
 
 def validate_correct_email(email):
