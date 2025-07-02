@@ -30,10 +30,11 @@ class Users(db.Model, UserMixin):
         Index("ix_users_is_admin", "is_admin"),
     )
 
-    def __init__(self, email, password, user_profile=None):
+    def __init__(self, email, password, user_profile=None, agent=None):
         self.email = email.lower()
         self.password = hasher.hash(password)
         self.user_profile = user_profile
+        self.agent = agent
 
     def check_password(self, password):
         return hasher.verify(password, self.password)
