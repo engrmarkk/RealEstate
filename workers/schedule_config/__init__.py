@@ -1,7 +1,7 @@
 from celery.schedules import crontab
 
 
-CELERY_IMPORTS = ("workers.cron_job.jobs",)
+CELERY_IMPORTS = ("workers.cron_jobs.jobs",)
 CELERY_TASK_RESULT_EXPIRES = 30
 CELERY_TIMEZONE = "UTC"
 
