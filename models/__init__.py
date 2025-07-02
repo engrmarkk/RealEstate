@@ -1,5 +1,11 @@
 from .user import UserProfile, Users
-from .agent import Agent, CommissionRateChange, CommissionRecord
+from .agent import (
+    Agent,
+    CommissionRateChange,
+    CommissionRecord,
+    AgentBankDetails,
+    AgentWallet,
+)
 from .interactions import Favorite, Tour, Inquiry
 from .property import (
     Property,
@@ -30,4 +36,6 @@ __all__ = [
     "CommissionRecord",
     "Transaction",
     "PropertyPurchased",
+    "AgentBankDetails",
+    "AgentWallet",
 ]
