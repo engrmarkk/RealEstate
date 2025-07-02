@@ -55,7 +55,9 @@ def send_mail(context):
         subject = context["subject"]
 
         # Construct the path to the HTML file within the templates folder
-        template_path = os.path.join(os.getcwd(), "templates", context["template_name"])
+        template_path = os.path.join(
+            os.getcwd(), "templates/notification", context["template_name"]
+        )
 
         # Read the HTML file content
         with open(template_path, "r") as html_file:
