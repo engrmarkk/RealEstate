@@ -18,18 +18,18 @@ class Agent(db.Model, UserMixin):
     office_address = db.Column(db.String(255))
     office_phone = db.Column(db.String(20))
     commission_rate = db.Column(db.Float, default=0.0)
-    is_verified = db.Column(db.Boolean, default=False)
+    is_verified = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
     agent_wallet = db.relationship(
-        "AgentWallet", backref="agent", cascade="all, delete-orphan"
+        "AgentWallet", backref="agent", cascade="all, delete-orphan", uselist=False
     )
     commission_record = db.relationship(
         "CommissionRecord", backref="agent", cascade="all, delete-orphan"
     )
     agent_bank_details = db.relationship(
-        "AgentBankDetails", backref="agent", cascade="all, delete-orphan"
+        "AgentBankDetails", backref="agent", cascade="all, delete-orphan", uselist=False
     )
     commission_rate_change = db.relationship(
         "CommissionRateChange", backref="agent", cascade="all, delete-orphan"
