@@ -2,7 +2,7 @@ from constants import DB_URI, SECRET_KEY
 
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = "sqlite:///database.db"
+    SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = SECRET_KEY
 
