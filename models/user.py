@@ -9,7 +9,7 @@ from sqlalchemy import Index
 class Users(db.Model, UserMixin):
     id = db.Column(db.String(50), primary_key=True, default=generate_db_id)
     email = db.Column(db.String(50), unique=True, nullable=False)
-    password = db.Column(db.String(50), nullable=False)
+    password = db.Column(db.String(150), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
@@ -43,9 +43,9 @@ class Users(db.Model, UserMixin):
 class UserProfile(db.Model):
     id = db.Column(db.String(50), primary_key=True, default=generate_db_id)
     user_id = db.Column(db.String(50), db.ForeignKey("users.id"), nullable=False)
-    first_name = db.Column(db.String(50))
-    last_name = db.Column(db.String(50))
-    phone = db.Column(db.String(20))
+    first_name = db.Column(db.String(100))
+    last_name = db.Column(db.String(100))
+    phone = db.Column(db.String(30))
     profile_image = db.Column(db.String(150))
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
