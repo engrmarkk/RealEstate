@@ -5,107 +5,90 @@
 {% block page_title %}Agents{% endblock %}
 
 {% block content %}
-<div class="bg-white rounded-xl shadow-lg p-6">
-    <div class="flex items-center justify-between mb-6">
-        <h2 class="text-2xl font-bold text-dark">All Agents</h2>
+<div class="max-w-7xl mx-auto py-10 px-2 sm:px-6 lg:px-8">
+  <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+    <div class="flex items-center justify-between mb-8 px-6 pt-6">
+        <h2 class="text-3xl font-bold text-dark">All Agents</h2>
         <div class="flex items-center gap-4">
             <span class="text-gray-500">Total: {{ total_agents }}</span>
-            <a href="{{ url_for('admin_blp.add_agent') }}" class="inline-flex items-center px-4 py-2 bg-primary text-white rounded-md shadow hover:bg-accent transition">
+            <a href="{{ url_for('admin_blp.add_agent') }}" class="inline-flex items-center px-5 py-2 bg-gradient-to-r from-primary to-purple-600 text-white rounded-lg shadow hover:bg-accent transition text-lg font-semibold">
                 <i class="fas fa-user-plus mr-2"></i> Add Agent
             </a>
         </div>
     </div>
     {% if agents and agents.items|length > 0 %}
-    <div class="overflow-x-auto rounded-lg">
-        <table class="min-w-full divide-y divide-gray-200">
-            <thead class="bg-primary text-white">
-                <tr>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Profile</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Email</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">First Name</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Last Name</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Phone</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Agent Code</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">License No.</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Experience</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Verified</th>
-                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Created At</th>
-                </tr>
-            </thead>
-            <tbody class="bg-white divide-y divide-gray-100">
-                {% for agent in agents.items %}
-                <tr class="hover:bg-light transition cursor-pointer" onclick="window.location='{{ url_for('admin_blp.view_agent', agent_id=agent.id) }}'">
-                    <td class="px-4 py-3">
-                        {% if agent.user_profile and agent.user_profile.profile_image %}
-                            <img src="{{ agent.user_profile.profile_image }}" alt="Profile" class="w-10 h-10 rounded-full border-2 border-accent object-cover">
-                        {% else %}
-                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
-                                <i class="fas fa-user"></i>
-                            </div>
-                        {% endif %}
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.email }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.user_profile.first_name if agent.user_profile else '' }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.user_profile.last_name if agent.user_profile else '' }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.user_profile.phone if agent.user_profile else '' }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.agent.agent_code }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.agent.license_number }}</td>
-                    <td class="px-4 py-3 text-sm text-gray-700">{{ agent.agent.experience_years }} yrs</td>
-                    <td class="px-4 py-3 text-sm">
-                        {% if agent.agent.is_verified %}
-                            <span class="inline-block px-2 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded">Yes</span>
-                        {% else %}
-                            <span class="inline-block px-2 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded">No</span>
-                        {% endif %}
-                    </td>
-                    <td class="px-4 py-3 text-sm text-gray-500">{{ agent.created_at.strftime('%Y-%m-%d') if agent.created_at else '' }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 px-6 pb-8">
+        {% for agent in agents.items %}
+        <a href="{{ url_for('admin_blp.view_agent', agent_id=agent.id) }}" class="block bg-gradient-to-br from-primary/5 to-purple-100 rounded-2xl shadow hover:shadow-xl transition p-6 group cursor-pointer h-full">
+            <div class="flex flex-col items-center text-center">
+                {% if agent.user_profile and agent.user_profile.profile_image %}
+                    <img src="{{ agent.user_profile.profile_image }}" alt="Profile" class="w-20 h-20 rounded-full border-4 border-primary object-cover shadow mb-4 group-hover:scale-105 transition">
+                {% else %}
+                    <div class="w-20 h-20 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-3xl border-4 border-primary shadow mb-4">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <h3 class="text-xl font-bold text-dark mb-1">{{ agent.user_profile.first_name if agent.user_profile else '' }} {{ agent.user_profile.last_name if agent.user_profile else '' }}</h3>
+                <div class="flex flex-wrap gap-2 items-center justify-center mb-2">
+                    <span class="inline-block px-3 py-1 text-xs font-semibold bg-blue-100 text-blue-800 rounded-full">{{ agent.agent.experience_years }} yrs</span>
+                    {% if agent.agent.is_verified %}
+                        <span class="inline-block px-3 py-1 text-xs font-semibold bg-green-100 text-green-800 rounded-full">Verified</span>
+                    {% else %}
+                        <span class="inline-block px-3 py-1 text-xs font-semibold bg-red-100 text-red-800 rounded-full">Not Verified</span>
+                    {% endif %}
+                </div>
+                <div class="text-gray-600 text-sm mb-1"><i class="fas fa-envelope mr-1"></i> {{ agent.email }}</div>
+                <div class="text-gray-600 text-sm mb-1"><i class="fas fa-phone mr-1"></i> {{ agent.user_profile.phone if agent.user_profile else '' }}</div>
+                <div class="text-gray-600 text-sm mb-1"><i class="fas fa-id-badge mr-1"></i> {{ agent.agent.agent_code }}</div>
+                <div class="text-gray-600 text-sm mb-1"><i class="fas fa-certificate mr-1"></i> {{ agent.agent.license_number }}</div>
+                <div class="text-gray-500 text-xs mt-2">Joined {{ agent.created_at.strftime('%Y-%m-%d') if agent.created_at else '' }}</div>
+            </div>
+        </a>
+        {% endfor %}
     </div>
     <!-- Pagination Controls -->
-    <div class="flex justify-between items-center mt-6">
-        <div class="text-sm text-gray-500">
+    <div class="flex justify-between items-center mt-8 px-6 pb-8">
+        <div class="text-base text-gray-500">
             Showing {{ agents.first }} - {{ agents.last }} of {{ agents.total }} agents
         </div>
         <nav class="inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
             {% if agents.has_prev %}
-                <a href="{{ url_for('admin_blp.all_agents_stats', page=agents.prev_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">
+                <a href="{{ url_for('admin_blp.all_agents_stats', page=agents.prev_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-base font-medium text-primary hover:bg-light">
                     <i class="fas fa-chevron-left"></i>
                 </a>
             {% else %}
-                <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-base font-medium text-gray-400 cursor-not-allowed">
                     <i class="fas fa-chevron-left"></i>
                 </span>
             {% endif %}
             {% for page_num in agents.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
                 {% if page_num %}
                     {% if agents.page == page_num %}
-                        <span class="relative inline-flex items-center px-3 py-2 border border-primary bg-primary text-white text-sm font-bold">{{ page_num }}</span>
+                        <span class="relative inline-flex items-center px-3 py-2 border border-primary bg-primary text-white text-base font-bold">{{ page_num }}</span>
                     {% else %}
-                        <a href="{{ url_for('admin_blp.all_agents_stats', page=page_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">{{ page_num }}</a>
+                        <a href="{{ url_for('admin_blp.all_agents_stats', page=page_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-base font-medium text-primary hover:bg-light">{{ page_num }}</a>
                     {% endif %}
                 {% else %}
-                    <span class="relative inline-flex items-center px-3 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-400">…</span>
+                    <span class="relative inline-flex items-center px-3 py-2 border border-gray-200 bg-white text-base font-medium text-gray-400">…</span>
                 {% endif %}
             {% endfor %}
             {% if agents.has_next %}
-                <a href="{{ url_for('admin_blp.all_agents_stats', page=agents.next_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">
+                <a href="{{ url_for('admin_blp.all_agents_stats', page=agents.next_num, per_page=agents.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-base font-medium text-primary hover:bg-light">
                     <i class="fas fa-chevron-right"></i>
                 </a>
             {% else %}
-                <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-base font-medium text-gray-400 cursor-not-allowed">
                     <i class="fas fa-chevron-right"></i>
                 </span>
             {% endif %}
         </nav>
     </div>
     {% else %}
-    <div class="text-center py-12">
-        <i class="fas fa-users text-5xl text-gray-300 mb-4"></i>
-        <h3 class="text-xl font-semibold text-gray-500">No agents found.</h3>
+    <div class="text-center py-20">
+        <i class="fas fa-users text-6xl text-gray-300 mb-4"></i>
+        <h3 class="text-2xl font-semibold text-gray-500">No agents found.</h3>
     </div>
     {% endif %}
+  </div>
 </div>
 {% endblock %}
