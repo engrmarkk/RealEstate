@@ -22,109 +22,33 @@
 </div>
 
 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-    {% set properties = [
-        {
-            'image': 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-            'title': 'Modern Family Home',
-            'address': '123 Maple St, New York, NY',
-            'price': '$1,200,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1460518451285-97b6aa326961?auto=format&fit=crop&w=400&q=80',
-            'title': 'Luxury Villa',
-            'address': '456 Ocean Ave, Miami, FL',
-            'price': '$2,950,000',
-            'status': 'Sold'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1507089947368-19c1da9775ae?auto=format&fit=crop&w=400&q=80',
-            'title': 'Downtown Apartment',
-            'address': '789 Market St, San Francisco, CA',
-            'price': '$850,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1512918728675-ed5a9ecdebfd?auto=format&fit=crop&w=400&q=80',
-            'title': 'Cozy Cottage',
-            'address': '321 Lakeview Dr, Austin, TX',
-            'price': '$650,000',
-            'status': 'Pending'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?auto=format&fit=crop&w=400&q=80',
-            'title': 'Suburban House',
-            'address': '654 Pine Rd, Seattle, WA',
-            'price': '$1,050,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-            'title': 'Elegant Mansion',
-            'address': '987 Sunset Blvd, Los Angeles, CA',
-            'price': '$4,500,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=400&q=80',
-            'title': 'Urban Loft',
-            'address': '159 King St, Chicago, IL',
-            'price': '$1,300,000',
-            'status': 'Sold'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1519985176271-adb1088fa94c?auto=format&fit=crop&w=400&q=80',
-            'title': 'Country Estate',
-            'address': '753 Country Ln, Nashville, TN',
-            'price': '$2,200,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=400&q=80',
-            'title': 'Beachfront Condo',
-            'address': '456 Coastal Dr, Malibu, CA',
-            'price': '$3,800,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=400&q=80',
-            'title': 'Mountain Retreat',
-            'address': '789 Alpine Way, Aspen, CO',
-            'price': '$1,750,000',
-            'status': 'Pending'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=400&q=80',
-            'title': 'Historic Townhouse',
-            'address': '321 Heritage St, Boston, MA',
-            'price': '$1,450,000',
-            'status': 'Available'
-        },
-        {
-            'image': 'https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=400&q=80',
-            'title': 'Modern Penthouse',
-            'address': '159 Skyline Ave, Denver, CO',
-            'price': '$2,800,000',
-            'status': 'Sold'
-        }
-    ] %}
-    {% for property in properties %}
-    <a href="#" class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group flex flex-col focus:outline-none focus:ring-2 focus:ring-primary">
+    {% for property in properties.items %}
+    <a href="/admin/view_property/{{ property.id }}" class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition group flex flex-col focus:outline-none focus:ring-2 focus:ring-primary">
         <div class="relative">
-            <img src="{{ property.image }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
+            {% set first_image = property.property_images[0].image_url if property.property_images and property.property_images|length > 0 else 'https://res.cloudinary.com/duwyopabr/image/upload/v1751572938/placeprope_wmtsun.png' %}
+            <img src="{{ first_image }}" alt="{{ property.title }}" class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-full text-xs font-semibold
-                {% if property.status == 'Available' %}bg-green-100 text-green-700
-                {% elif property.status == 'Sold' %}bg-red-100 text-red-700
-                {% elif property.status == 'Pending' %}bg-yellow-100 text-yellow-700
-                {% endif %}">
-                {{ property.status }}
+                {% if property.property_status.name == 'active' %}bg-green-100 text-green-700
+                {% elif property.property_status.name == 'sold' %}bg-red-100 text-red-700
+                {% elif property.property_status.name == 'pending' %}bg-yellow-100 text-yellow-700
+                {% else %}bg-gray-100 text-gray-700{% endif %}">
+                {{ property.property_status.value|capitalize }}
             </span>
+            <!-- Property Type and Listing Type Badges -->
+            <div class="absolute top-3 right-3 flex flex-col items-end gap-2">
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 mb-1">
+                    {{ property.property_type.value|capitalize }}
+                </span>
+                <span class="inline-block px-3 py-1 rounded-full text-xs font-semibold bg-purple-100 text-purple-700">
+                    {{ property.listing_type.value.replace('_', ' ')|capitalize }}
+                </span>
+            </div>
         </div>
         <div class="p-5 flex-1 flex flex-col">
             <h3 class="text-lg font-bold text-dark mb-1">{{ property.title }}</h3>
             <p class="text-gray-500 text-sm mb-2 flex-1"><i class="fas fa-map-marker-alt mr-1 text-primary"></i> {{ property.address }}</p>
             <div class="flex items-center justify-between mt-auto">
-                <span class="text-xl font-bold text-primary">{{ property.price }}</span>
+                <span class="text-xl font-bold text-primary">₦{{ '{:,.2f}'.format(property.price) }}</span>
             </div>
         </div>
     </a>
@@ -134,20 +58,39 @@
 <!-- Pagination -->
 <div class="flex justify-center mt-10">
     <nav class="inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
-        <a href="#" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+        {% if properties.has_prev %}
+        <a href="{{ url_for('admin_blp.properties', page=properties.prev_num, per_page=properties.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">Previous</span>
             <i class="fas fa-chevron-left"></i>
         </a>
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-primary text-white text-sm font-medium hover:bg-primary-700">1</a>
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">2</a>
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">3</a>
-        <span class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700">...</span>
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">8</a>
-        <a href="#" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-gray-700 hover:bg-gray-50">9</a>
-        <a href="#" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
+        {% else %}
+        <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <span class="sr-only">Previous</span>
+            <i class="fas fa-chevron-left"></i>
+        </span>
+        {% endif %}
+        {% for page_num in properties.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
+            {% if page_num %}
+                {% if properties.page == page_num %}
+                    <span class="relative inline-flex items-center px-4 py-2 border border-primary bg-primary text-white text-sm font-bold">{{ page_num }}</span>
+                {% else %}
+                    <a href="{{ url_for('admin_blp.properties', page=page_num, per_page=properties.per_page) }}" class="relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">{{ page_num }}</a>
+                {% endif %}
+            {% else %}
+                <span class="relative inline-flex items-center px-4 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-400">…</span>
+            {% endif %}
+        {% endfor %}
+        {% if properties.has_next %}
+        <a href="{{ url_for('admin_blp.properties', page=properties.next_num, per_page=properties.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-gray-500 hover:bg-gray-50">
             <span class="sr-only">Next</span>
             <i class="fas fa-chevron-right"></i>
         </a>
+        {% else %}
+        <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+            <span class="sr-only">Next</span>
+            <i class="fas fa-chevron-right"></i>
+        </span>
+        {% endif %}
     </nav>
 </div>
 
