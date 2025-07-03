@@ -3,6 +3,8 @@ import string
 import random
 from flask import session
 from email_validator import validate_email, EmailNotValidError
+from werkzeug.utils import secure_filename
+import os
 
 
 def generate_db_id():
@@ -107,3 +109,17 @@ def save_name_email_pass(
     session["password"] = password
     session["confirm_password"] = confirm_password
     return
+
+
+def convert_image_to_file(img):
+    from werkzeug.utils import secure_filename
+
+    # Get the absolute path to the static/uploads directory
+    STATIC_FOLDER = os.path.join(os.getcwd(), "static", "uploads")
+    os.makedirs(STATIC_FOLDER, exist_ok=True)  # Ensure the folder exists
+
+    filename = secure_filename(img.filename)
+    save_path = os.path.join(STATIC_FOLDER, filename)
+    img.save(save_path)
+
+    return save_path
