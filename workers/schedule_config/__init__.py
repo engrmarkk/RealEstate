@@ -1,15 +1,16 @@
 from celery.schedules import crontab
 
 
-CELERY_IMPORTS = ("workers.cron_jobs.jobs",)
-CELERY_TASK_RESULT_EXPIRES = 30
-CELERY_TIMEZONE = "UTC"
+imports = ("workers.cron_jobs.jobs", "workers.background_tasks")
+result_expires = 30
+timezone = "UTC"
 
-CELERY_ACCEPT_CONTENT = ["json", "msgpack", "yaml"]
-CELERY_TASK_SERIALIZER = "json"
-CELERY_RESULT_SERIALIZER = "json"
+accept_content = ["json", "msgpack", "yaml"]
+task_serializer = "json"
+result_serializer = "json"
+broker_connection_retry_on_startup = True
 
-# CELERYBEAT_SCHEDULE = {
+# beat_schedule = {
 #     "check_task": {
 #         "task": "celery_config.cron_job.jobs.check_pending_tasks",
 #         "schedule": crontab(minute=28, hour=20),
