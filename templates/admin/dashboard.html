@@ -1,1 +1,183 @@
 {% extends "admin/layout.html" %}
+
+{% block title %}Dashboard | Admin{% endblock %}
+
+{% block content %}
+<div class="w-full min-h-screen bg-gray-100 py-0 px-0">
+  <!-- Top Metrics Cards -->
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-12 px-8 pt-12">
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col gap-2 border border-gray-200">
+      <div class="text-gray-500 text-sm font-medium">Total Properties</div>
+      <div class="text-3xl font-bold text-dark">1,245</div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col gap-2 border border-gray-200">
+      <div class="text-gray-500 text-sm font-medium">Total Agents</div>
+      <div class="text-3xl font-bold text-dark">87</div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col gap-2 border border-gray-200">
+      <div class="text-gray-500 text-sm font-medium">Total Users</div>
+      <div class="text-3xl font-bold text-dark">2,340</div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 flex flex-col gap-2 border border-gray-200">
+      <div class="text-gray-500 text-sm font-medium">Total Revenue</div>
+      <div class="text-3xl font-bold text-dark">₦12,500,000</div>
+    </div>
+  </div>
+
+  <!-- Charts Row -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 px-8">
+    <div class="bg-white rounded-xl shadow p-0 border border-gray-200 flex flex-col items-center">
+      <div class="w-full flex items-center justify-between pt-4 pl-4">
+        <h3 class="text-lg font-semibold text-dark">Properties by Type</h3>
+      </div>
+      <canvas id="propertiesByTypeChart" class="w-full max-w-xs mx-auto h-8"></canvas>
+    </div>
+    <div class="bg-white rounded-xl shadow p-0 border border-gray-200 flex flex-col items-center">
+      <div class="w-full flex items-center justify-between pt-4 pl-4">
+        <h3 class="text-lg font-semibold text-dark">Revenue Trend</h3>
+      </div>
+      <canvas id="revenueTrendChart" class="w-full p-8 mx-auto h-8"></canvas>
+    </div>
+  </div>
+
+  <!-- Recent Properties & Transactions -->
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12 px-8">
+    <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-dark">Recent Properties</h3>
+        <a href="#" class="text-primary text-sm font-medium hover:underline">View All</a>
+      </div>
+      <ul class="divide-y divide-gray-100">
+        {% for i in range(5) %}
+        <li class="py-4 flex items-center gap-4">
+          <div class="w-14 h-14 rounded-lg bg-gray-100 flex items-center justify-center overflow-hidden border border-gray-200">
+            <img src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?auto=format&fit=crop&w=100&q=80" alt="Property" class="object-cover w-full h-full">
+          </div>
+          <div class="flex-1">
+            <div class="font-semibold text-dark">Sample Property {{ i+1 }}</div>
+            <div class="text-xs text-gray-500">For Sale • ₦2,500,000 • Lagos</div>
+          </div>
+          <a href="#" class="text-primary text-xs font-medium hover:underline">Details</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 border border-gray-200">
+      <div class="flex items-center justify-between mb-4">
+        <h3 class="text-lg font-semibold text-dark">Recent Transactions</h3>
+        <a href="#" class="text-primary text-sm font-medium hover:underline">View All</a>
+      </div>
+      <ul class="divide-y divide-gray-100">
+        {% for i in range(5) %}
+        <li class="py-4 flex items-center gap-4">
+          <div class="w-10 h-10 rounded-full bg-gray-100 flex items-center justify-center text-gray-400 border border-gray-200">
+            <i class="fas fa-coins"></i>
+          </div>
+          <div class="flex-1">
+            <div class="font-semibold text-dark">TXN-00{{ i+1 }}</div>
+            <div class="text-xs text-gray-500">₦1,000,000 • 2024-07-1{{ i+1 }}</div>
+          </div>
+          <a href="#" class="text-primary text-xs font-medium hover:underline">Details</a>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+
+  <!-- Engagement & Quick Actions -->
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12 px-8">
+    <div class="bg-white rounded-xl shadow p-6 border border-gray-200 flex flex-col items-center">
+      <div class="text-2xl text-primary mb-1"><i class="fas fa-eye"></i></div>
+      <div class="text-xl font-bold">8,900</div>
+      <div class="text-xs text-gray-500">Total Property Views</div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 border border-gray-200 flex flex-col items-center">
+      <div class="text-2xl text-pink-500 mb-1"><i class="fas fa-heart"></i></div>
+      <div class="text-xl font-bold">1,230</div>
+      <div class="text-xs text-gray-500">Total Favorites</div>
+    </div>
+    <div class="bg-white rounded-xl shadow p-6 border border-gray-200 flex flex-col items-center">
+      <div class="text-2xl text-blue-500 mb-1"><i class="fas fa-question-circle"></i></div>
+      <div class="text-xl font-bold">320</div>
+      <div class="text-xs text-gray-500">Total Inquiries</div>
+    </div>
+  </div>
+
+  <!-- Quick Actions -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-10 px-8">
+    <a href="#" class="flex items-center gap-2 bg-primary text-white rounded-lg shadow px-5 py-3 font-semibold text-base hover:bg-primary/90 transition">
+      <i class="fas fa-plus-circle text-lg"></i> Add Property
+    </a>
+    <a href="#" class="flex items-center gap-2 bg-gray-700 text-white rounded-lg shadow px-5 py-3 font-semibold text-base hover:bg-gray-800 transition">
+      <i class="fas fa-user-plus text-lg"></i> Add Agent
+    </a>
+    <a href="#" class="flex items-center gap-2 bg-gray-200 text-gray-800 rounded-lg shadow px-5 py-3 font-semibold text-base hover:bg-gray-300 transition">
+      <i class="fas fa-file-invoice-dollar text-lg"></i> View Transactions
+    </a>
+    <a href="#" class="flex items-center gap-2 bg-gray-200 text-gray-800 rounded-lg shadow px-5 py-3 font-semibold text-base hover:bg-gray-300 transition">
+      <i class="fas fa-envelope-open-text text-lg"></i> View Inquiries
+    </a>
+  </div>
+</div>
+
+<!-- Chart.js CDN -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Properties by Type Pie Chart
+  var ctx1 = document.getElementById('propertiesByTypeChart').getContext('2d');
+  new Chart(ctx1, {
+    type: 'pie',
+    data: {
+      labels: ['House', 'Apartment', 'Commercial', 'Land'],
+      datasets: [{
+        data: [320, 540, 120, 265], // Sample data
+        backgroundColor: ['#6366f1', '#38bdf8', '#fbbf24', '#34d399'],
+        borderWidth: 1,
+        borderColor: '#f3f4f6',
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 14 }, color: '#6b7280' } }
+      }
+    }
+  });
+
+  // Revenue Trend Line Chart
+  var ctx2 = document.getElementById('revenueTrendChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'line',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul'],
+      datasets: [{
+        label: 'Revenue',
+        data: [1200000, 1500000, 1100000, 1800000, 2000000, 1700000, 2200000],
+        fill: false,
+        borderColor: '#6366f1',
+        backgroundColor: '#6366f1',
+        tension: 0.4,
+        pointBackgroundColor: '#6366f1',
+        pointRadius: 4,
+      }]
+    },
+    options: {
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { font: { size: 12 }, color: '#6b7280' },
+          grid: { color: '#e5e7eb' }
+        },
+        x: {
+          ticks: { font: { size: 12 }, color: '#6b7280' },
+          grid: { color: '#e5e7eb' }
+        }
+      }
+    }
+  });
+});
+</script>
+{% endblock %}
