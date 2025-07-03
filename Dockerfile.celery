@@ -1,0 +1,45 @@
+# === Stage 1: Build stage ===
+FROM python:3.10-slim AS builder
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    libpq-dev \
+    musl-dev \
+    tzdata \
+    libc-dev \
+    libffi-dev \
+    openssl \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# === Stage 2: Runtime stage ===
+FROM python:3.10-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+WORKDIR /app
+
+ARG DOCKER_USER=appuser
+RUN useradd -m $DOCKER_USER
+
+# Copy installed system-wide packages and project code
+COPY --from=builder /usr/local /usr/local
+COPY --from=builder /app /app
+RUN chown -R $DOCKER_USER /app
+
+USER $DOCKER_USER
+
+CMD ["celery", "-A", "workers.utils.cel_workers.celery", "worker", "--loglevel=info", "--concurrency=4", "--autoscale=4,2", "-E", "-B"]
