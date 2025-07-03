@@ -6,11 +6,18 @@ from utils.util import (
     validate_correct_email,
     validate_phone_number,
 )
-from cruds import get_all_agents, get_user_by_email, create_agent, get_user_by_phone
+from cruds import (
+    get_all_agents,
+    get_user_by_email,
+    create_agent,
+    get_user_by_phone,
+    get_agent_by_id,
+)
 from logger import logger
 from services.paystack import pay_stack
 from connections.redis_connection import redis_conn
 import json
+from extensions import db
 
 
 # all agents stats
@@ -40,20 +47,66 @@ def all_agents_stats():
         )
 
 
-@admin_blp.route("/view_agent/<agent_id>")
+@admin_blp.route("/view_agent/<string:agent_id>")
 @login_required
 def view_agent(agent_id):
     logger.info(f"Agent ID: {agent_id}")
-    return render_template("admin/view_agent.html")
+    agent = get_agent_by_id(agent_id)
+    alert, bg_color = session_alert_bg_color()
+    banks = pay_stack.list_banks()
+    return render_template(
+        "admin/view_agent.html",
+        agent=agent,
+        banks=banks.get("data", []),
+        alert=alert,
+        bg_color=bg_color,
+    )
 
 
-"""
-context = {
-    "subject": "Test Subject",
-    "template_name": "test.html",
-    "email": "r0lK0@example.com",
-}
-"""
+# edit agent
+@admin_blp.route("/edit_agent/<string:agent_id>", methods=["POST"])
+@login_required
+def edit_agent(agent_id):
+    agent = get_agent_by_id(agent_id)
+
+    first_name = request.form.get("first_name")
+    last_name = request.form.get("last_name")
+    phone = request.form.get("phone")
+    commission_rate = request.form.get("commission_rate")
+    specialization = request.form.get("specialization")
+    office_address = request.form.get("office_address")
+    bank_code = request.form.get("bank_code")
+    account_number = request.form.get("account_number")
+    account_holder_name = request.form.get("account_holder_name")
+    bank_name = request.form.get("bank_name")
+
+    agent.user_profile.first_name = first_name or agent.user_profile.first_name
+    agent.user_profile.last_name = last_name or agent.user_profile.last_name
+    if phone and phone != agent.user_profile.phone:
+        phone_res = validate_phone_number(phone)
+        if phone_res:
+            session_alert_bg_color(phone_res)
+            return redirect(url_for("admin_blp.view_agent", agent_id=agent_id))
+        if get_user_by_phone(phone):
+            session_alert_bg_color("Phone number already exists")
+            return redirect(url_for("admin_blp.view_agent", agent_id=agent_id))
+        agent.user_profile.phone = phone or agent.user_profile.phone
+    agent.agent.commission_rate = commission_rate or agent.agent.commission_rate
+    agent.agent.specialization = specialization or agent.agent.specialization
+    agent.agent.office_address = office_address or agent.agent.office_address
+
+    agent_bnk_details = agent.agent.agent_bank_details
+    agent_bnk_details.bank_code = bank_code or agent_bnk_details.bank_code
+    agent_bnk_details.account_number = (
+        account_number or agent_bnk_details.account_number
+    )
+    agent_bnk_details.account_holder_name = (
+        account_holder_name or agent_bnk_details.account_holder_name
+    )
+    agent_bnk_details.bank_name = bank_name or agent_bnk_details.bank_name
+
+    db.session.commit()
+    return redirect(url_for("admin_blp.view_agent", agent_id=agent_id))
 
 
 # add_agent
@@ -160,7 +213,7 @@ def add_agent():
         redis_conn.delete("add_agent")
         session_alert_bg_color("Agent created successfully", "green")
 
-        send_mail(
+        send_mail.delay(
             {
                 "subject": "Agent Created",
                 "template_name": "agent_created.html",
