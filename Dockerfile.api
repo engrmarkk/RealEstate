@@ -1,0 +1,43 @@
+# === Stage 1: Build environment ===
+FROM python:3.10-slim AS builder
+
+ENV PYTHONDONTWRITEBYTECODE=1
+ENV PYTHONUNBUFFERED=1
+
+WORKDIR /app
+
+# Install build dependencies
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    python3-dev \
+    libpq-dev \
+    musl-dev \
+    libc-dev \
+    libffi-dev \
+    openssl \
+ && apt-get clean \
+ && rm -rf /var/lib/apt/lists/*
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY . .
+
+# === Stage 2: Runtime environment ===
+FROM python:3.10-slim
+
+WORKDIR /app
+
+# Add a non-root user
+ARG DOCKER_USER=appuser
+RUN useradd -m $DOCKER_USER
+
+# Copy everything from builder
+COPY --from=builder /usr/local /usr/local
+COPY --from=builder /app /app
+RUN chown -R $DOCKER_USER /app
+
+USER $DOCKER_USER
+
+EXPOSE 8000
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "runserver:app"]
