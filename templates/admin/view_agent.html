@@ -1,0 +1,286 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Agent Profile{% endblock %}
+
+{% block page_title %}Agent Profile{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto py-12 px-2 sm:px-6 lg:px-8">
+    <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+        <a href="{{ url_for('admin_blp.all_agents_stats') }}" class="inline-flex items-center mb-6 text-primary hover:underline px-8 pt-8">
+            <i class="fas fa-arrow-left mr-2"></i> Back to Agents
+        </a>
+        <div class="flex flex-col md:flex-row items-center md:items-start gap-12 px-8 pb-12">
+            <!-- Profile Image -->
+            <div class="flex-shrink-0 flex flex-col items-center">
+                {% if agent.user_profile and agent.user_profile.profile_image %}
+                    <img src="{{ agent.user_profile.profile_image }}" alt="Profile" class="w-44 h-44 rounded-full border-4 border-primary object-cover shadow-xl mb-4">
+                {% else %}
+                    <div class="w-44 h-44 rounded-full bg-gray-200 flex items-center justify-center text-gray-400 text-7xl border-4 border-primary shadow-xl mb-4">
+                        <i class="fas fa-user"></i>
+                    </div>
+                {% endif %}
+                <!-- Edit Button -->
+                <button onclick="openEditModal()" class="mt-4 w-full inline-flex items-center justify-center px-6 py-3 bg-gradient-to-r from-primary to-purple-600 text-white rounded-lg shadow hover:bg-accent transition font-semibold text-lg">
+                    <i class="fas fa-edit mr-2"></i> Edit Agent
+                </button>
+            </div>
+            <!-- Profile Details -->
+            <div class="flex-1 w-full">
+                <h2 class="text-4xl font-bold text-dark mb-2">{{ agent.user_profile.first_name }} {{ agent.user_profile.last_name }}</h2>
+                <div class="flex flex-wrap gap-4 items-center mb-6">
+                    <span class="inline-block px-4 py-1 bg-primary text-white rounded-full text-base font-semibold uppercase tracking-wide">Agent</span>
+                    {% if agent.agent.is_verified %}
+                        <span class="inline-block px-4 py-1 bg-green-100 text-green-800 rounded-full text-base font-semibold">Verified</span>
+                    {% else %}
+                        <span class="inline-block px-4 py-1 bg-red-100 text-red-800 rounded-full text-base font-semibold">Not Verified</span>
+                    {% endif %}
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8">
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-envelope text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Email</div>
+                            <div class="text-gray-800 font-medium">{{ agent.email }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-phone text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Phone</div>
+                            <div class="text-gray-800 font-medium">{{ agent.user_profile.phone }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-id-badge text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Agent Code</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.agent_code }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-certificate text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">License Number</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.license_number if agent.agent.license_number != None else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-briefcase text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Experience</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.experience_years }} years</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-star text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Specialization</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.specialization if agent.agent.specialization != None else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="md:col-span-2 flex items-start gap-3">
+                        <i class="fas fa-info-circle text-primary mt-1"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Bio</div>
+                            <div class="text-gray-800 font-medium whitespace-pre-line">{{ agent.agent.bio if agent.agent.bio != None else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-map-marker-alt text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Office Address</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.office_address if agent.agent.office_address != None else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-phone-alt text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Office Phone</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.office_phone if agent.agent.office_phone != None else 'N/A' }}</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-percent text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Commission Rate</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.commission_rate }}%</div>
+                        </div>
+                    </div>
+                    <div class="flex items-center gap-3">
+                        <i class="fas fa-calendar-alt text-primary"></i>
+                        <div>
+                            <div class="text-gray-500 text-xs font-semibold mb-1">Created At</div>
+                            <div class="text-gray-800 font-medium">{{ agent.agent.created_at.strftime('%Y-%m-%d') if agent.created_at }}</div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Bank Details (if available) -->
+                {% if agent.agent.agent_bank_details %}
+                <div class="mt-10">
+                    <h3 class="text-xl font-semibold text-primary mb-4 flex items-center gap-2"><i class="fas fa-university"></i> Bank Details</h3>
+                    <div class="p-6 bg-gradient-to-br from-primary/10 to-purple-100 rounded-xl border border-primary/20 max-w-lg shadow">
+                        <div class="mb-3 flex items-center gap-2">
+                            <i class="fas fa-university text-primary"></i>
+                            <span class="block text-gray-500 text-xs font-semibold mb-1">Bank Name</span>
+                            <span class="text-gray-800 font-medium">{{ agent.agent.agent_bank_details.bank_name }}</span>
+                        </div>
+                        <div class="mb-3 flex items-center gap-2">
+                            <i class="fas fa-barcode text-primary"></i>
+                            <span class="block text-gray-500 text-xs font-semibold mb-1">Bank Code</span>
+                            <span class="text-gray-800 font-medium">{{ agent.agent.agent_bank_details.bank_code }}</span>
+                        </div>
+                        <div class="mb-3 flex items-center gap-2">
+                            <i class="fas fa-hashtag text-primary"></i>
+                            <span class="block text-gray-500 text-xs font-semibold mb-1">Account Number</span>
+                            <span class="text-gray-800 font-medium">{{ agent.agent.agent_bank_details.account_number }}</span>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <i class="fas fa-user text-primary"></i>
+                            <span class="block text-gray-500 text-xs font-semibold mb-1">Account Holder Name</span>
+                            <span class="text-gray-800 font-medium">{{ agent.agent.agent_bank_details.account_holder_name }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Edit Agent Modal -->
+<div id="editAgentModal" class="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-40 hidden">
+    <div class="bg-white rounded-xl shadow-lg w-full max-w-lg p-8 relative animate-fade-in">
+        <button onclick="closeEditModal()" class="absolute top-4 right-4 text-gray-400 hover:text-primary text-2xl font-bold">&times;</button>
+        <h2 class="text-2xl font-bold text-primary mb-6 flex items-center gap-2"><i class="fas fa-user-edit"></i> Edit Agent</h2>
+        <form id="editAgentForm" method="POST" action="{{ url_for('admin_blp.edit_agent', agent_id=agent.id) }}" class="space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                    <input type="text" name="first_name" value="{{ agent.user_profile.first_name }}" class="input w-full border border-gray-300 bg-white rounded-md p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                    <input type="text" name="last_name" value="{{ agent.user_profile.last_name }}" class="input w-full border border-gray-300 bg-white rounded-md p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                    <input type="tel" name="phone" value="{{ agent.user_profile.phone }}" class="input w-full border border-gray-300 bg-white rounded-md p-2" required>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Office Address</label>
+                    <input type="text" name="office_address" value="{{ agent.agent.office_address if agent.agent.office_address != None else '' }}" class="input w-full border border-gray-300 bg-white rounded-md p-2">
+                </div>
+                <div class="md:col-span-2">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Specialization</label>
+                    <input type="text" name="specialization" value="{{ agent.agent.specialization if agent.agent.specialization != None else '' }}" class="input w-full border border-gray-300 bg-white rounded-md p-2">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Commission Rate</label>
+                    <input type="number" name="commission_rate" min="0" step="0.01" value="{{ agent.agent.commission_rate }}" class="input w-full border border-gray-300 bg-white rounded-md p-2" required>
+                </div>
+            </div>
+            <!-- Bank Details Edit Section -->
+            <div class="mt-8">
+                <h3 class="text-lg font-semibold text-primary mb-4 flex items-center gap-2"><i class="fas fa-university"></i> Edit Bank Details</h3>
+                <div id="editFormError" class="hidden mb-4 p-3 rounded bg-red-100 text-red-700 font-semibold text-center"></div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bank Name</label>
+                        <select name="bank_code" id="edit_bank_code" class="input w-full border border-gray-300 bg-white rounded-md p-2">
+                            <option value="">Select Bank</option>
+                            {% for bank in banks %}
+                            <option value="{{ bank.code }}" data-name="{{ bank.name }}" {% if agent.agent.agent_bank_details and bank.code == agent.agent.agent_bank_details.bank_code %}selected{% endif %}>{{ bank.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Bank Code</label>
+                        <input type="text" name="bank_code_text" id="edit_bank_code_text" class="input w-full border border-gray-300 bg-white rounded-md p-2" readonly placeholder="Auto-filled from bank selection" value="{{ agent.agent.agent_bank_details.bank_code if agent.agent.agent_bank_details else '' }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Account Number</label>
+                        <input type="text" name="account_number" id="edit_account_number" maxlength="10" class="input w-full border border-gray-300 bg-white rounded-md p-2" autocomplete="off" value="{{ agent.agent.agent_bank_details.account_number if agent.agent.agent_bank_details else '' }}">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Account Holder Name</label>
+                        <input type="text" name="account_holder_name" id="edit_account_holder_name" class="input w-full border border-gray-300 bg-white rounded-md p-2" readonly placeholder="Auto-filled from bank selection" value="{{ agent.agent.agent_bank_details.account_holder_name if agent.agent.agent_bank_details else '' }}">
+                    </div>
+                </div>
+                <input type="hidden" name="bank_name" id="edit_bank_name" value="{{ agent.agent.agent_bank_details.bank_name if agent.agent.agent_bank_details else '' }}">
+            </div>
+            <div class="flex justify-end gap-4 mt-8">
+                <button type="button" onclick="closeEditModal()" class="inline-flex items-center px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200 transition">Cancel</button>
+                <button type="submit" class="inline-flex items-center px-6 py-2 bg-primary text-white rounded-md shadow hover:bg-accent transition font-semibold text-lg">
+                    <i class="fas fa-save mr-2"></i> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Modal JS -->
+<script>
+function openEditModal() {
+    document.getElementById('editAgentModal').classList.remove('hidden');
+}
+function closeEditModal() {
+    document.getElementById('editAgentModal').classList.add('hidden');
+}
+// Optional: Close modal on ESC key
+window.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeEditModal();
+});
+
+// Bank details JS for edit modal
+const editBankSelect = document.getElementById('edit_bank_code');
+const editBankCodeText = document.getElementById('edit_bank_code_text');
+const editBankNameInput = document.getElementById('edit_bank_name');
+editBankSelect.addEventListener('change', function() {
+    editBankCodeText.value = this.value;
+    const selectedOption = editBankSelect.options[editBankSelect.selectedIndex];
+    editBankNameInput.value = selectedOption.getAttribute('data-name') || '';
+});
+
+const editAccountNumberInput = document.getElementById('edit_account_number');
+const editAccountHolderNameInput = document.getElementById('edit_account_holder_name');
+const editFormError = document.getElementById('editFormError');
+
+editAccountNumberInput.addEventListener('input', function() {
+    const accountNumber = this.value;
+    const bankCode = editBankSelect.value;
+    if (accountNumber.length === 10 && bankCode) {
+        fetch('/transactions/resolve_account', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Requested-With': 'XMLHttpRequest',
+            },
+            body: JSON.stringify({
+                account_number: accountNumber,
+                bank_code: bankCode
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.status === true) {
+                editAccountHolderNameInput.value = data.data.account_name;
+                editFormError.classList.add('hidden');
+                editFormError.textContent = '';
+            } else {
+                editAccountHolderNameInput.value = '';
+                editFormError.textContent = data.message || 'Failed to resolve account.';
+                editFormError.classList.remove('hidden');
+            }
+        })
+        .catch(() => {
+            editAccountHolderNameInput.value = '';
+            editFormError.textContent = 'Error resolving account. Please try again.';
+            editFormError.classList.remove('hidden');
+        });
+    } else {
+        editAccountHolderNameInput.value = '';
+    }
+});
+</script>
+{% endblock %}
