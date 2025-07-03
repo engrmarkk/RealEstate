@@ -38,8 +38,15 @@
           <input type="number" name="area_sqft" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
         </div>
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Size (acres)</label>
+          <label class="block text-gray-700 font-semibold mb-2">Size (plots)</label>
           <input type="number" name="size" step="0.01" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+        </div>
+        <!-- listing type -->
+        <div>
+          <label class="block text-gray-700 font-semibold mb-2">Property Type</label>
+          <select name="property_type" required class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none transition">
+            <option value="land">Land</option>
+          </select>
         </div>
       </div>
       <div>
@@ -146,5 +153,14 @@ fetch('/admin/static/ng_states_cities.json')
       });
     });
   });
+
+// Ensure all file inputs are present and not visually shown at submit
+const addLandForm = document.getElementById('addLandForm');
+addLandForm.addEventListener('submit', function() {
+  const imageInputs = imageUploadGroup.querySelectorAll('input[type="file"]');
+  imageInputs.forEach(input => {
+    input.style.display = 'none'; // keep hidden for layout, but present for submission
+  });
+});
 </script>
 {% endblock %}
