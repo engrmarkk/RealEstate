@@ -1,4 +1,13 @@
-from models import Users, UserProfile, Agent, AgentBankDetails, AgentWallet
+from models import (
+    Users,
+    UserProfile,
+    Agent,
+    AgentBankDetails,
+    AgentWallet,
+    Property,
+    LandDetails,
+)
+from models.model_enum import PropertyType
 from extensions import db
 from logger import logger
 from utils.util import generate_agent_code
@@ -107,3 +116,65 @@ def get_all_agents(page, per_page):
     except Exception as e:
         logger.error(f"Error getting all agents: {e}")
         return None, 0
+
+
+# gett ine agent
+def get_agent_by_id(agent_id):
+    return Users.query.filter_by(id=agent_id).first()
+
+
+def save_land_property(
+    title, address, description, price, area_sqft, state, city, size, images
+):
+    try:
+        from workers.background_tasks import save_property_images
+
+        property = Property(
+            title=title,
+            address=address,
+            description=description,
+            price=price,
+            state=state,
+            city=city,
+            property_type=PropertyType.land,
+            land_details=LandDetails(size=size, area_sqft=area_sqft),
+        )
+        property = save_and_commit(property)
+        save_property_images.delay(property.id, images, title)
+        return property
+    except Exception as e:
+        logger.error(f"Error saving land property: {e}")
+        return None
+
+
+# get properties with filters
+def get_all_properties(page, per_page, property_type, property_status, city, state):
+    try:
+        properties = (
+            Property.query.filter(
+                Property.property_type == property_type if property_type else True,
+                (
+                    Property.property_status == property_status
+                    if property_status
+                    else True
+                ),
+                Property.state == state if state else True,
+                Property.city == city if city else True,
+            )
+            .order_by(Property.created_at.desc())
+            .paginate(page=page, per_page=per_page, error_out=False)
+        )
+        total_properties = Property.query.filter(
+            Property.property_type == property_type if property_type else True,
+            Property.property_status == property_status if property_status else True,
+            Property.state == state if state else True,
+            Property.city == city if city else True,
+        ).count()
+        return properties, total_properties
+    except Exception as e:
+        logger.error(f"Error getting all properties: {e}")
+        return None, 0
+
+
+def get_one_property(property_id):
+    return Property.query.filter_by(id=property_id).first()
