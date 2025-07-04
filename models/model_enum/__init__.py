@@ -51,3 +51,16 @@ class InquiryStatus(SQLAlchemyEnum):
 class CommissionRecordType(SQLAlchemyEnum):
     earn = "earn"
     withdraw = "withdraw"
+
+
+# transaction type
+class TransactionType(SQLAlchemyEnum):
+    deposit = "deposit"
+    withdrawal = "withdrawal"
+    payment = "payment"
+    refund = "refund"
+
+
+class TransactionStatus(SQLAlchemyEnum):
+    success = "success"
+    failed = "failed"
