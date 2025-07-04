@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction Details | DreamHome{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="bg-white rounded-xl shadow-lg p-8 mb-8">
+            <h1 class="text-2xl font-bold text-dark mb-6">Transaction Details</h1>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div>
+                    <div class="mb-2"><span class="font-semibold">Date:</span> {{ transaction.created_at.strftime('%Y-%m-%d %H:%M') }}</div>
+                    <div class="mb-2"><span class="font-semibold">Amount:</span> ₦{{ '{:,.2f}'.format(transaction.amount) }}</div>
+                    <div class="mb-2"><span class="font-semibold">Channel:</span> {{ transaction.channel|capitalize }}</div>
+                    <div class="mb-2"><span class="font-semibold">Type:</span> {{ transaction.transaction_type.value|capitalize }}</div>
+                </div>
+                <div>
+                    <div class="mb-2"><span class="font-semibold">Status:</span>
+                        <span class="px-3 py-1 rounded-full text-xs font-semibold
+                            {% if transaction.transaction_status == 'success' %}bg-green-100 text-green-700
+                            {% elif transaction.transaction_status == 'failed' %}bg-red-100 text-red-700
+                            {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                            {{ transaction.transaction_status.value|capitalize }}
+                        </span>
+                    </div>
+                    <div class="mb-2"><span class="font-semibold">Reference:</span> {{ transaction.reference_number }}</div>
+                    <div class="mb-2"><span class="font-semibold">Transaction ID:</span> {{ transaction.transaction_id }}</div>
+                    <div class="mb-2"><span class="font-semibold">IP Address:</span> {{ transaction.ip_address }}</div>
+                </div>
+            </div>
+            {% if transaction.property_purchased and transaction.property_purchased|length > 0 %}
+            <h2 class="text-xl font-bold text-dark mb-4 mt-8">Property Purchases</h2>
+            <div class="space-y-6">
+                {% for purchase in transaction.property_purchased %}
+                <div class="flex flex-col md:flex-row items-center bg-gray-50 rounded-lg p-4 shadow">
+                    <img src="{{ purchase.property.property_images[0].image_url if purchase.property and purchase.property.property_images else '/static/uploads/default.jpg' }}"
+                         alt="{{ purchase.property.title if purchase.property else 'Property' }}"
+                         class="w-32 h-24 object-cover rounded-lg border mb-4 md:mb-0 md:mr-6">
+                    <div class="flex-1">
+                        <div class="font-bold text-lg text-dark mb-1">{{ purchase.property.title if purchase.property else 'N/A' }}</div>
+                        <div class="text-gray-600 mb-1">{{ purchase.property.city if purchase.property else '' }}, {{ purchase.property.state if purchase.property else '' }}</div>
+                        <div class="mb-1"><span class="font-semibold">{% if purchase.property.property_type.value == 'land' %}Plot{% else %}Unit{% endif %}:</span> {{ purchase.count }}</div>
+                        <div class="mb-1"><span class="font-semibold">Price per {% if purchase.property.property_type.value == 'land' %}plot{% else %}unit{% endif %}:</span> ₦{{ '{:,.2f}'.format(purchase.amount / purchase.count if purchase.count else purchase.amount) }}</div>
+                        <div class="mb-1"><span class="font-semibold">Total:</span> ₦{{ '{:,.2f}'.format(purchase.amount) }}</div>
+                        <div class="mb-1"><span class="font-semibold">Status:</span>
+                            <span class="px-3 py-1 rounded-full text-xs font-semibold
+                                {% if purchase.transaction.transaction_status.value == 'success' %}bg-green-100 text-green-700
+                                {% elif purchase.transaction.transaction_status.value == 'failed' %}bg-red-100 text-red-700
+                                {% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                {{ purchase.transaction.transaction_status.value|capitalize }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            {% else %}
+            <div class="text-center text-gray-400 py-8">No property purchases for this transaction.</div>
+            {% endif %}
+            <div class="mt-8 flex justify-end gap-4">
+                <a href="/dashboard" class="px-6 py-2 bg-primary text-white rounded-lg font-semibold hover:bg-purple-700 transition-colors duration-200">Back to Dashboard</a>
+                <a href="/properties" class="px-6 py-2 bg-secondary text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200">Browse Properties</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
