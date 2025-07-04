@@ -13,6 +13,7 @@ from .property import (
     LandDetails,
     PropertyImages,
     PropertyPurchased,
+    PropertyCart,
 )
 from .system import Newsletter, PropertyView, Contact
 from .transactions import Transaction
@@ -30,6 +31,7 @@ __all__ = [
     "HouseDetails",
     "LandDetails",
     "PropertyImages",
+    "PropertyCart",
     "Newsletter",
     "PropertyView",
     "Contact",
