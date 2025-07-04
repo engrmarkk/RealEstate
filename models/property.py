@@ -26,11 +26,11 @@ class Property(db.Model, UserMixin):
     house_details = db.relationship("HouseDetails", backref="property", uselist=False)
     property_images = db.relationship("PropertyImages", backref="property")
     property_views = db.relationship("PropertyView", backref="property")
-    transactions = db.relationship("Transaction", backref="property")
     favorites = db.relationship("Favorite", backref="property")
     inquiries = db.relationship("Inquiry", backref="property")
     tours = db.relationship("Tour", backref="property")
     property_purchased = db.relationship("PropertyPurchased", backref="property")
+    property_carts = db.relationship("PropertyCart", backref="property")
 
     __table_args__ = (
         Index("ix_property_created_at", "created_at"),
@@ -87,6 +87,8 @@ class PropertyPurchased(db.Model, UserMixin):
     property_id = db.Column(db.String(50), db.ForeignKey("property.id"), nullable=False)
     user_id = db.Column(db.String(50), db.ForeignKey("users.id"), nullable=False)
     amount = db.Column(db.Float, default=0.0)
+    count = db.Column(db.Integer, default=1)
+    transaction_id = db.Column(db.String(50), db.ForeignKey("transaction.id"))
     created_at = db.Column(db.DateTime, default=datetime.now)
     updated_at = db.Column(db.DateTime, default=datetime.now)
 
@@ -96,4 +98,22 @@ class PropertyPurchased(db.Model, UserMixin):
         Index("ix_property_purchased_updated_at", "updated_at"),
         Index("ix_property_purchased_property_id", "property_id"),
         Index("ix_property_purchased_user_id", "user_id"),
+    )
+
+
+# property carts
+class PropertyCart(db.Model, UserMixin):
+    id = db.Column(db.String(50), primary_key=True, default=generate_db_id)
+    property_id = db.Column(db.String(50), db.ForeignKey("property.id"), nullable=False)
+    user_id = db.Column(db.String(50), db.ForeignKey("users.id"), nullable=False)
+    count = db.Column(db.Integer, default=1)
+    created_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now)
+
+    __table_args__ = (
+        db.UniqueConstraint("property_id", "user_id"),
+        Index("ix_property_cart_created_at", "created_at"),
+        Index("ix_property_cart_updated_at", "updated_at"),
+        Index("ix_property_cart_property_id", "property_id"),
+        Index("ix_property_cart_user_id", "user_id"),
     )
