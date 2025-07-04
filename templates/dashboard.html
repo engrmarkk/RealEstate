@@ -1,0 +1,142 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard | DreamHome{% endblock %}
+
+{% block content %}
+<section class="py-12 bg-gray-50 min-h-screen">
+    <div class="max-w-full mx-auto px-2 sm:px-4 lg:px-8">
+        <h1 class="text-3xl font-serif font-bold text-dark mb-8">My Dashboard</h1>
+        <!-- Tabs -->
+        <div class="mb-8">
+            <div class="flex border-b border-gray-200">
+                <button id="tab-transactions" class="tab-btn px-6 py-2 text-sm font-semibold focus:outline-none border-b-2 border-primary text-primary" data-tab="transactions">Transactions</button>
+                <button id="tab-purchases" class="tab-btn px-6 py-2 text-sm font-semibold focus:outline-none text-gray-500 hover:text-primary" data-tab="purchases">Property Purchases</button>
+            </div>
+        </div>
+        <!-- Transactions Table -->
+        <div id="tab-content-transactions">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Channel</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Reference</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% if transactions and transactions.items|length > 0 %}
+                            {% for txn in transactions.items %}
+                                <tr class="cursor-pointer hover:bg-gray-100" onclick="window.location='/transaction/{{ txn.id }}'">
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">₦{{ '{:,.2f}'.format(txn.amount) }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.channel|capitalize }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.transaction_type|capitalize }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">
+                                        <span class="px-3 py-1 rounded-full text-xs font-semibold {% if txn.transaction_status == 'success' %}bg-green-100 text-green-700{% elif txn.transaction_status == 'failed' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                            {{ txn.transaction_status|capitalize }}
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.reference_number }}</td>
+                                </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center text-gray-400 py-8">No transactions found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <!-- Pagination -->
+            {% if transactions and transactions.pages > 1 %}
+            <div class="flex justify-center mt-6">
+                <nav class="flex items-center space-x-2">
+                    {% if transactions.has_prev %}
+                    <a href="?page={{ transactions.prev_num }}&per_page={{ transactions.per_page }}" class="px-4 py-2 border rounded-lg text-primary border-primary hover:bg-primary hover:text-white">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                    {% endif %}
+                    {% for p in range(1, transactions.pages + 1) %}
+                        {% if p == transactions.page %}
+                            <span class="px-4 py-2 border rounded-lg bg-primary text-white">{{ p }}</span>
+                        {% else %}
+                            <a href="?page={{ p }}&per_page={{ transactions.per_page }}" class="px-4 py-2 border rounded-lg hover:bg-gray-100">{{ p }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    {% if transactions.has_next %}
+                    <a href="?page={{ transactions.next_num }}&per_page={{ transactions.per_page }}" class="px-4 py-2 border rounded-lg text-primary border-primary hover:bg-primary hover:text-white">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                    {% endif %}
+                </nav>
+            </div>
+            {% endif %}
+        </div>
+        <!-- Property Purchases Table -->
+        <div id="tab-content-purchases" class="hidden">
+            <div class="bg-white rounded-xl shadow-lg p-6 mb-8">
+                <div class="overflow-x-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Count</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                            </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200">
+                            {% if property_purchases %}
+                            {% for purchase in property_purchases %}
+                            <tr>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ purchase.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ purchase.property.title if purchase.property else 'N/A' }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">₦{{ '{:,.2f}'.format(purchase.amount) }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <span class="px-3 py-1 rounded-full text-xs font-semibold {% if purchase.status == 'success' %}bg-green-100 text-green-700{% elif purchase.status == 'failed' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
+                                        {{ purchase.count }} {% if purchase.property.property_type.value == 'land' %}plot{% else %}unit{% endif %}
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 whitespace-nowrap">{{ purchase.property.property_type.value|capitalize }}</td>
+                            </tr>
+                            {% endfor %}
+                            {% else %}
+                            <tr>
+                                <td colspan="5" class="text-center text-gray-400 py-8">No property purchases found.</td>
+                            </tr>
+                            {% endif %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script>
+// Tab switching
+const tabBtns = document.querySelectorAll('.tab-btn');
+const tabContents = {
+    transactions: document.getElementById('tab-content-transactions'),
+    purchases: document.getElementById('tab-content-purchases')
+};
+tabBtns.forEach(btn => {
+    btn.addEventListener('click', function() {
+        tabBtns.forEach(b => b.classList.remove('border-primary', 'text-primary'));
+        this.classList.add('border-primary', 'text-primary');
+        Object.values(tabContents).forEach(tc => tc.classList.add('hidden'));
+        tabContents[this.dataset.tab].classList.remove('hidden');
+    });
+});
+</script>
+{% endblock %}
