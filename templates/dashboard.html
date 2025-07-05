@@ -35,10 +35,10 @@
                                     <td class="px-6 py-4 whitespace-nowrap">{{ txn.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">₦{{ '{:,.2f}'.format(txn.amount) }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ txn.channel|capitalize }}</td>
-                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.transaction_type|capitalize }}</td>
+                                    <td class="px-6 py-4 whitespace-nowrap">{{ txn.transaction_type.value|capitalize }}</td>
                                     <td class="px-6 py-4 whitespace-nowrap">
                                         <span class="px-3 py-1 rounded-full text-xs font-semibold {% if txn.transaction_status == 'success' %}bg-green-100 text-green-700{% elif txn.transaction_status == 'failed' %}bg-red-100 text-red-700{% else %}bg-yellow-100 text-yellow-700{% endif %}">
-                                            {{ txn.transaction_status|capitalize }}
+                                            {{ txn.transaction_status.value|capitalize }}
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 whitespace-nowrap">{{ txn.reference_number }}</td>
