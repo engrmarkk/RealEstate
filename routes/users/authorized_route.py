@@ -1,8 +1,15 @@
 from . import users_blp
 from flask import render_template, request, jsonify, redirect, url_for
 from utils.util import session_alert_bg_color
-from cruds import favorite_property, add_to_cart, get_user_carts, \
-get_redis_cart_count, fetch_transactions, get_property_purchases, get_one_trans
+from cruds import (
+    favorite_property,
+    add_to_cart,
+    get_user_carts,
+    get_redis_cart_count,
+    fetch_transactions,
+    get_property_purchases,
+    get_one_trans,
+)
 from flask_login import login_required, current_user
 from constants import PAYSTACK_PUBLIC_KEY
 from logger import logger
@@ -17,13 +24,19 @@ def dashboard():
     property_purchases = get_property_purchases(current_user.id, page, per_page)
     alert, bg_color = session_alert_bg_color()
     transactions_dicts = [txn.to_dict() for txn in transactions.items]
-    return render_template("dashboard.html", alert=alert, bg_color=bg_color, transactions=transactions,
-                           transactions_json=transactions_dicts, property_purchases=property_purchases)
+    return render_template(
+        "dashboard.html",
+        alert=alert,
+        bg_color=bg_color,
+        transactions=transactions,
+        transactions_json=transactions_dicts,
+        property_purchases=property_purchases,
+    )
 
 
 # one transaction
 @users_blp.route("/transaction/<string:transaction_id>")
-@login_required 
+@login_required
 def transaction(transaction_id):
     transaction = get_one_trans(current_user.id, transaction_id)
     return render_template("transaction.html", transaction=transaction)
