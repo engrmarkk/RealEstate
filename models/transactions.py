@@ -14,8 +14,12 @@ class Transaction(db.Model, UserMixin):
     amount = db.Column(db.Float, default=0.0)
     channel = db.Column(db.String(50))
     transaction_id = db.Column(db.String(50))
-    transaction_type = db.Column(db.Enum(TransactionType), default=TransactionType.payment)
-    transaction_status = db.Column(db.Enum(TransactionStatus), default=TransactionStatus.success)
+    transaction_type = db.Column(
+        db.Enum(TransactionType), default=TransactionType.payment
+    )
+    transaction_status = db.Column(
+        db.Enum(TransactionStatus), default=TransactionStatus.success
+    )
     authorization_dict = db.Column(db.JSON)
     ip_address = db.Column(db.String(50))
     reference_number = db.Column(db.String(50), nullable=False)
@@ -31,7 +35,7 @@ class Transaction(db.Model, UserMixin):
     def to_dict(self):
         return {
             "id": self.id,
-            "created_at": self.created_at.strftime('%Y-%m-%d %H:%M'),
+            "created_at": self.created_at.strftime("%Y-%m-%d %H:%M"),
             "amount": self.amount,
             "channel": self.channel,
             "transaction_type": self.transaction_type.value,
@@ -40,8 +44,8 @@ class Transaction(db.Model, UserMixin):
             "property_purchases": [
                 {
                     "property_title": p.property.title if p.property else "N/A",
-                    "amount": p.amount
+                    "amount": p.amount,
                 }
                 for p in getattr(self, "property_purchased", [])
-            ]
+            ],
         }
