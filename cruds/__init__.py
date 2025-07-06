@@ -227,6 +227,7 @@ def get_redis_cart_count(user_id):
 # add to cart
 def add_to_cart(user_id, property_id, action="add"):
     try:
+        prop = Property.query.filter_by(id=property_id).first()
         if action == "remove_all":
             delete_and_commit(
                 PropertyCart.query.filter_by(
@@ -261,8 +262,13 @@ def add_to_cart(user_id, property_id, action="add"):
                 user_id=user_id, property_id=property_id
             ).first()
             if cart:
-                cart.count += 1
-                db.session.commit()
+                # if the cart exists and the property is a land, and the cart count is less than the land size
+                if prop.land_details and prop.land_details.size > cart.count:
+                    cart.count += 1
+                    db.session.commit()
+                    return {
+                        "cart_count": get_user_cart_count(user_id),
+                    }
                 return {
                     "cart_count": get_user_cart_count(user_id),
                 }
@@ -317,6 +323,16 @@ def get_property_carts(user_id):
     return PropertyCart.query.filter_by(user_id=user_id).all()
 
 
+# reduce count for property purchase
+def reduce_land_plot(property_id, count):
+    prop = Property.query.filter_by(id=property_id).first()
+    land_prop = prop.land_details
+    if land_prop:
+        land_prop.size -= count
+        db.session.commit()
+    return
+
+
 # proccess cart purchase
 def process_cart_payment(user_id, data):
     carts_props = get_property_carts(user_id)
@@ -329,6 +345,7 @@ def process_cart_payment(user_id, data):
             trans.id,
             cart.count,
         )
+        reduce_land_plot(cart.property_id, cart.count)
     return
 
 
