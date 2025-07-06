@@ -21,6 +21,7 @@ def properties():
     alert, bg_color = session_alert_bg_color()
     page = int(request.args.get("page", 1))
     per_page = int(request.args.get("per_page", 10))
+    cart_count = 0
     property_type = request.args.get("property_type")
     property_status = request.args.get("property_status")
     city = request.args.get("city")
