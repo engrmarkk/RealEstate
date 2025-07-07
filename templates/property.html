@@ -30,7 +30,7 @@
                 <span class="text-lg text-gray-600">/plot</span>
                 {% endif %}
                 </span>
-                {% if current_user.is_authenticated and property.listing_type.value == 'for sale' %}
+                {% if current_user.is_authenticated %}
                 <button id="addToCartBtn" type="button" class="mt-2 px-6 py-2 bg-secondary text-white rounded-lg font-semibold hover:bg-green-700 transition-colors duration-200" data-property-id="{{ property.id }}">
                     Add to Cart
                 </button>
@@ -98,42 +98,42 @@
                                 <i class="fas fa-bed text-primary mr-3 text-xl"></i>
                                 <div>
                                     <p class="text-gray-600">Bedrooms</p>
-                                    <p class="font-medium">{{ property.bedrooms }}</p>
+                                    <p class="font-medium">{{ property.house_details.bedrooms }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-bath text-primary mr-3 text-xl"></i>
                                 <div>
                                     <p class="text-gray-600">Bathrooms</p>
-                                    <p class="font-medium">{{ property.bathrooms }}</p>
+                                    <p class="font-medium">{{ property.house_details.bathrooms }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-vector-square text-primary mr-3 text-xl"></i>
                                 <div>
-                                    <p class="text-gray-600">Area</p>
-                                    <p class="font-medium">{{ property.area }} sqft</p>
+                                    <p class="text-gray-600">Garage Spaces</p>
+                                    <p class="font-medium">{{ property.house_details.garage_spaces }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-layer-group text-primary mr-3 text-xl"></i>
                                 <div>
-                                    <p class="text-gray-600">Year Built</p>
-                                    <p class="font-medium">{{ property.year_built }}</p>
+                                    <p class="text-gray-600">Furnished</p>
+                                    <p class="font-medium">{{ 'Yes' if property.house_details.is_furnished else 'No' }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-car text-primary mr-3 text-xl"></i>
                                 <div>
-                                    <p class="text-gray-600">Garage</p>
-                                    <p class="font-medium">{{ property.garage }} cars</p>
+                                    <p class="text-gray-600">Garden</p>
+                                    <p class="font-medium">{{ 'Yes' if property.house_details.has_garden else 'No' }}</p>
                                 </div>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-swimming-pool text-primary mr-3 text-xl"></i>
                                 <div>
                                     <p class="text-gray-600">Pool</p>
-                                    <p class="font-medium">{{ 'Yes' if property.pool else 'No' }}</p>
+                                    <p class="font-medium">{{ 'Yes' if property.house_details.has_pool else 'No' }}</p>
                                 </div>
                             </div>
                         {% endif %}
