@@ -1,5 +1,5 @@
 import os
-from models import PropertyImages
+from models import PropertyImages, Property
 from extensions import db
 from services.cloudnary import upload_image
 from logger import logger
