@@ -48,6 +48,7 @@ def property(property_id):
     one_property = get_one_property(property_id)
     image_urls = [img.image_url for img in one_property.property_images]
     is_favorite = False
+    cart_count = 0
     if current_user.is_authenticated:
         is_favorite = is_favorited(current_user.id, property_id)
         cart_count = get_redis_cart_count(current_user.id)
