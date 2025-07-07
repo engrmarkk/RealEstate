@@ -77,15 +77,11 @@
                         {% else %}
                             <div class="flex items-center">
                                 <i class="fas fa-bed text-primary mr-2"></i>
-                                <span>{{ property.bedrooms or 0 }} Beds</span>
+                                <span>{{ property.house_details.bedrooms or 0 }} Beds</span>
                             </div>
                             <div class="flex items-center">
                                 <i class="fas fa-bath text-primary mr-2"></i>
-                                <span>{{ property.bathrooms or 0 }} Baths</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-vector-square text-primary mr-2"></i>
-                                <span>{{ property.size or 'N/A' }} sqft</span>
+                                <span>{{ property.house_details.bathrooms or 0 }} Baths</span>
                             </div>
                         {% endif %}
                     </div>
