@@ -3,7 +3,7 @@ from extensions import db
 from utils.util import generate_db_id
 from datetime import datetime
 from sqlalchemy import Index
-from .model_enum import TransactionType, TransactionStatus
+from models.model_enum import TransactionType, TransactionStatus
 
 # transactions
 
@@ -24,7 +24,7 @@ class Transaction(db.Model, UserMixin):
     ip_address = db.Column(db.String(50))
     reference_number = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     property_purchased = db.relationship("PropertyPurchased", backref="transaction")
     __table_args__ = (
         Index("ix_transaction_created_at", "created_at"),
