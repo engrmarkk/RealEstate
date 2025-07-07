@@ -12,7 +12,7 @@ class Users(db.Model, UserMixin):
     password = db.Column(db.String(150), nullable=False)
     is_admin = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     user_profile = db.relationship("UserProfile", backref="user", uselist=False)
     agent = db.relationship("Agent", backref="user", uselist=False)
@@ -38,6 +38,10 @@ class Users(db.Model, UserMixin):
 
     def check_password(self, password):
         return hasher.verify(password, self.password)
+    
+    # ser password
+    def set_password(self, password):
+        self.password = hasher.hash(password)
 
 
 class UserProfile(db.Model):
@@ -48,7 +52,7 @@ class UserProfile(db.Model):
     phone = db.Column(db.String(30))
     profile_image = db.Column(db.String(150))
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         Index("ix_user_profile_created_at", "created_at"),
