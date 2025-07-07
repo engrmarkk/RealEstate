@@ -6,12 +6,13 @@ from models import (
     AgentWallet,
     Property,
     LandDetails,
+    HouseDetails,
     Favorite,
     PropertyCart,
     Transaction,
     PropertyPurchased,
 )
-from models.model_enum import PropertyType
+from models.model_enum import PropertyType, ListingType
 from extensions import db
 from logger import logger
 from utils.util import generate_agent_code
@@ -158,6 +159,57 @@ def save_land_property(
         return None
 
 
+def save_apartment_property(
+    title,
+    address,
+    description,
+    price,
+    state,
+    city,
+    bedrooms,
+    bathrooms,
+    garage_spaces,
+    has_pool,
+    has_garden,
+    has_balcony,
+    has_elevator,
+    is_furnished,
+    is_pet_friendly,
+    images,
+    listing_type
+):
+    try:
+        from workers.background_tasks import save_property_images
+
+        property = Property(
+            title=title,
+            address=address,
+            description=description,
+            price=price,
+            state=state,
+            city=city,
+            property_type=PropertyType.apartment,
+            listing_type=ListingType.for_sale if listing_type == "sale" else ListingType.for_rent,
+            house_details=HouseDetails(
+                bedrooms=bedrooms,
+                bathrooms=bathrooms,
+                garage_spaces=garage_spaces,
+                has_pool=has_pool,
+                has_garden=has_garden,
+                has_balcony=has_balcony,
+                has_elevator=has_elevator,
+                is_furnished=is_furnished,
+                is_pet_friendly=is_pet_friendly,
+            ),
+        )
+        property = save_and_commit(property)
+        save_property_images.delay(property.id, images, title)
+        return property
+    except Exception as e:
+        logger.error(f"Error saving apartment property: {e}")
+        return None
+
+
 # get properties with filters
 def get_all_properties(page, per_page, property_type, property_status, city, state):
     try:
@@ -171,6 +223,7 @@ def get_all_properties(page, per_page, property_type, property_status, city, sta
                 ),
                 Property.state == state if state else True,
                 Property.city == city if city else True,
+                Property.available == True,
             )
             .order_by(Property.created_at.desc())
             .paginate(page=page, per_page=per_page, error_out=False)
@@ -285,7 +338,9 @@ def add_to_cart(user_id, property_id, action="add"):
 # get user carts
 def get_user_carts(user_id):
     return (
-        PropertyCart.query.filter_by(user_id=user_id)
+        PropertyCart.query.join(Property, Property.id == PropertyCart.property_id).filter(
+            PropertyCart.user_id == user_id,
+            Property.available == True)
         .order_by(PropertyCart.created_at.desc())
         .all()
     )
@@ -330,7 +385,24 @@ def reduce_land_plot(property_id, count):
     if land_prop:
         land_prop.size -= count
         db.session.commit()
+    update_available_status(property_id)
     return
+
+
+def update_available_status(property_id):
+    try:
+        prop = Property.query.get(property_id)
+        if prop:
+            if prop.land_details and prop.land_details.size == 0:
+                prop.available = False
+            if prop.house_details:
+                prop.available = False
+            db.session.commit()
+            return True
+        return False
+    except Exception as e:
+        logger.error(f"Error updating available status: {e}")
+        return False
 
 
 # proccess cart purchase
