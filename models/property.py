@@ -9,7 +9,7 @@ from models.model_enum import PropertyType, PropertyStatus, ListingType
 class Property(db.Model, UserMixin):
     id = db.Column(db.String(50), primary_key=True, default=generate_db_id)
     title = db.Column(db.String(50))
-    description = db.Column(db.String(255))
+    description = db.Column(db.Text)
     property_type = db.Column(db.Enum(PropertyType), default=PropertyType.apartment)
     listing_type = db.Column(db.Enum(ListingType), default=ListingType.for_sale)
     property_status = db.Column(
@@ -19,8 +19,9 @@ class Property(db.Model, UserMixin):
     address = db.Column(db.String(255))
     state = db.Column(db.String(50))
     city = db.Column(db.String(50))
+    available = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     land_details = db.relationship("LandDetails", backref="property", uselist=False)
     house_details = db.relationship("HouseDetails", backref="property", uselist=False)
@@ -52,7 +53,7 @@ class LandDetails(db.Model, UserMixin):
     size = db.Column(db.Float)
     property_id = db.Column(db.String(50), db.ForeignKey("property.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
 # house details
@@ -69,7 +70,7 @@ class HouseDetails(db.Model, UserMixin):
     is_pet_friendly = db.Column(db.Boolean, default=False)
     property_id = db.Column(db.String(50), db.ForeignKey("property.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
 # property images
@@ -78,7 +79,7 @@ class PropertyImages(db.Model, UserMixin):
     image_url = db.Column(db.String(255))
     property_id = db.Column(db.String(50), db.ForeignKey("property.id"), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
 
 # property purchased
@@ -90,10 +91,9 @@ class PropertyPurchased(db.Model, UserMixin):
     count = db.Column(db.Integer, default=1)
     transaction_id = db.Column(db.String(50), db.ForeignKey("transaction.id"))
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
-        db.UniqueConstraint("property_id", "user_id"),
         Index("ix_property_purchased_created_at", "created_at"),
         Index("ix_property_purchased_updated_at", "updated_at"),
         Index("ix_property_purchased_property_id", "property_id"),
@@ -108,7 +108,7 @@ class PropertyCart(db.Model, UserMixin):
     user_id = db.Column(db.String(50), db.ForeignKey("users.id"), nullable=False)
     count = db.Column(db.Integer, default=1)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         db.UniqueConstraint("property_id", "user_id"),
