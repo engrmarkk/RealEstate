@@ -25,7 +25,7 @@ class Inquiry(db.Model, UserMixin):
     contact_phone = db.Column(db.String(20))
     status = db.Column(db.String(20), default=InquiryStatus.pending)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     responded_at = db.Column(db.DateTime)
 
 
@@ -39,5 +39,5 @@ class Tour(db.Model, UserMixin):
     status = db.Column(db.String(20), default=TourStatus.pending)
     notes = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
     confirmed_at = db.Column(db.DateTime)
