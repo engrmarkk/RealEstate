@@ -20,7 +20,7 @@ class Agent(db.Model, UserMixin):
     commission_rate = db.Column(db.Float, default=0.0)
     is_verified = db.Column(db.Boolean, default=True)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     agent_wallet = db.relationship(
         "AgentWallet", backref="agent", cascade="all, delete-orphan", uselist=False
@@ -51,7 +51,13 @@ class AgentBankDetails(db.Model, UserMixin):
     account_number = db.Column(db.String(20), nullable=False)
     account_holder_name = db.Column(db.String(100), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    __table_args__ = (
+        Index("ix_agent_bank_details_created_at", "created_at"),
+        Index("ix_agent_bank_details_updated_at", "updated_at"),
+        Index("ix_agent_bank_details_agent_id", "agent_id"),
+    )
 
 
 # commision rate changes record
@@ -62,7 +68,7 @@ class CommissionRateChange(db.Model, UserMixin):
     new_rate = db.Column(db.Float, default=0.0)
     change_date = db.Column(db.DateTime, default=datetime.now)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         Index("ix_commission_rate_change_created_at", "created_at"),
@@ -77,7 +83,13 @@ class AgentWallet(db.Model, UserMixin):
     agent_id = db.Column(db.String(50), db.ForeignKey("agent.id"), nullable=False)
     balance = db.Column(db.Float, default=0.0)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
+
+    __table_args__ = (
+        Index("ix_agent_wallet_created_at", "created_at"),
+        Index("ix_agent_wallet_updated_at", "updated_at"),
+        Index("ix_agent_wallet_agent_id", "agent_id"),
+    )
 
 
 # commision record
@@ -89,7 +101,7 @@ class CommissionRecord(db.Model, UserMixin):
     record_type = db.Column(db.String(50), default=CommissionRecordType.earn)
     refernce_number = db.Column(db.String(50), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         Index("ix_commission_record_created_at", "created_at"),
