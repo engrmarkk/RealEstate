@@ -9,11 +9,11 @@ class Newsletter(db.Model, UserMixin):
     id = db.Column(db.String(50), primary_key=True, default=generate_db_id)
     email = db.Column(db.String(100), unique=True, nullable=False)
     is_active = db.Column(db.Boolean, default=True)
-    subscribed_at = db.Column(db.DateTime, default=datetime.now)
+    created_at = db.Column(db.DateTime, default=datetime.now)
     unsubscribed_at = db.Column(db.DateTime)
 
     __table_args__ = (
-        Index("ix_newsletter_subscribed_at", "subscribed_at"),
+        Index("ix_newsletter_created_at", "created_at"),
         Index("ix_newsletter_unsubscribed_at", "unsubscribed_at"),
         Index("ix_newsletter_email", "email", unique=True),
         Index("ix_newsletter_is_active", "is_active"),
@@ -29,7 +29,7 @@ class Contact(db.Model, UserMixin):
     message = db.Column(db.Text)
     opened = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         Index("ix_contact_created_at", "created_at"),
@@ -43,7 +43,7 @@ class PropertyView(db.Model, UserMixin):
     ip_address = db.Column(db.String(45))
     user_agent = db.Column(db.Text)
     created_at = db.Column(db.DateTime, default=datetime.now)
-    updated_at = db.Column(db.DateTime, default=datetime.now)
+    updated_at = db.Column(db.DateTime, default=datetime.now, onupdate=datetime.now)
 
     __table_args__ = (
         Index("ix_property_view_created_at", "created_at"),
