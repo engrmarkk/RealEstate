@@ -36,7 +36,7 @@ RUN useradd -m $DOCKER_USER
 COPY --from=builder /usr/local /usr/local
 COPY --from=builder /app /app
 RUN chown -R $DOCKER_USER /app
-
+RUN mkdir -p /app/static/uploads && chown -R $DOCKER_USER:$DOCKER_USER /app/static/uploads
 USER $DOCKER_USER
 
 EXPOSE 8000
