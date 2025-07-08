@@ -21,6 +21,7 @@ class Users(db.Model, UserMixin):
     inquiries = db.relationship("Inquiry", backref="user")
     tours = db.relationship("Tour", backref="user")
     property_purchased = db.relationship("PropertyPurchased", backref="user")
+    property_carts = db.relationship("PropertyCart", backref="user")
 
     # indexes
     __table_args__ = (
