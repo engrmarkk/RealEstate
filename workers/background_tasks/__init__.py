@@ -10,6 +10,8 @@ from datetime import datetime
 @shared_task
 def save_property_images(property_id, images, title):
     logger.info(f"Saving property images: {property_id}, {images}")
+    # if the title has whitespaces, replace with underscores
+    title = title.replace(" ", "_")
     for image in images:
         image_url = upload_image(image, title=title)
         logger.info(f"Image URL: {image_url} for image: {image}")
