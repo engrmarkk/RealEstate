@@ -176,7 +176,7 @@ def save_apartment_property(
     is_furnished,
     is_pet_friendly,
     images,
-    listing_type
+    listing_type,
 ):
     try:
         from workers.background_tasks import save_property_images
@@ -189,7 +189,9 @@ def save_apartment_property(
             state=state,
             city=city,
             property_type=PropertyType.apartment,
-            listing_type=ListingType.for_sale if listing_type == "sale" else ListingType.for_rent,
+            listing_type=(
+                ListingType.for_sale if listing_type == "sale" else ListingType.for_rent
+            ),
             house_details=HouseDetails(
                 bedrooms=bedrooms,
                 bathrooms=bathrooms,
@@ -338,9 +340,8 @@ def add_to_cart(user_id, property_id, action="add"):
 # get user carts
 def get_user_carts(user_id):
     return (
-        PropertyCart.query.join(Property, Property.id == PropertyCart.property_id).filter(
-            PropertyCart.user_id == user_id,
-            Property.available == True)
+        PropertyCart.query.join(Property, Property.id == PropertyCart.property_id)
+        .filter(PropertyCart.user_id == user_id, Property.available == True)
         .order_by(PropertyCart.created_at.desc())
         .all()
     )
