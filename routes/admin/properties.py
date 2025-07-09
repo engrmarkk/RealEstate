@@ -3,7 +3,12 @@ from flask import render_template, request, session, redirect, url_for
 from flask_login import login_required
 from utils.util import session_alert_bg_color, convert_image_to_file
 from logger import logger
-from cruds import save_land_property, get_all_properties, get_one_property, save_apartment_property
+from cruds import (
+    save_land_property,
+    get_all_properties,
+    get_one_property,
+    save_apartment_property,
+)
 
 
 @admin_blp.route("/properties")
@@ -120,7 +125,7 @@ def add_apartment():
                 state,
                 city,
                 images,
-                listing_type
+                listing_type,
             ]
         ):
             session_alert_bg_color("Please fill in all fields")
@@ -146,7 +151,7 @@ def add_apartment():
             is_furnished,
             is_pet_friendly,
             saved_filenames,
-            listing_type
+            listing_type,
         )
         session_alert_bg_color("Apartment property added successfully", "green")
         return redirect(url_for("admin_blp.add_apartment"))
