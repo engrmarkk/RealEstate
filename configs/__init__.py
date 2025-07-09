@@ -5,6 +5,7 @@ class Config:
     SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = SECRET_KEY
+    SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
 
 
 class DevelopmentConfig(Config):
