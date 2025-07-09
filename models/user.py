@@ -39,7 +39,7 @@ class Users(db.Model, UserMixin):
 
     def check_password(self, password):
         return hasher.verify(password, self.password)
-    
+
     # ser password
     def set_password(self, password):
         self.password = hasher.hash(password)
