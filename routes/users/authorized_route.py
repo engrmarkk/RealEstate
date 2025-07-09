@@ -1,6 +1,11 @@
 from . import users_blp
 from flask import render_template, request, jsonify, redirect, url_for
-from utils.util import session_alert_bg_color, validate_password, validate_phone_number, save_name_email_pass
+from utils.util import (
+    session_alert_bg_color,
+    validate_password,
+    validate_phone_number,
+    save_name_email_pass,
+)
 from cruds import (
     favorite_property,
     add_to_cart,
@@ -42,7 +47,9 @@ def dashboard():
 @login_required
 def profile():
     alert, bg_color = session_alert_bg_color()
-    phone, current_password, new_password, confirm_password = save_name_email_pass(get=True)
+    phone, current_password, new_password, confirm_password = save_name_email_pass(
+        get=True
+    )
     if request.method == "POST":
         profile_image = request.files.get("profile_image")
         current_password = request.form.get("current_password")
@@ -80,9 +87,15 @@ def profile():
             current_user.user_profile.profile_image = profile_image
 
         db.session.commit()
-    return render_template("profile.html", alert=alert, bg_color=bg_color, phone=phone,
-                           current_password=current_password, new_password=new_password,
-                           confirm_password=confirm_password)
+    return render_template(
+        "profile.html",
+        alert=alert,
+        bg_color=bg_color,
+        phone=phone,
+        current_password=current_password,
+        new_password=new_password,
+        confirm_password=confirm_password,
+    )
 
 
 # one transaction
