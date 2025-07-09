@@ -32,6 +32,7 @@ def verify_paystack_transaction(user_id, ref):
     try:
         from services.paystack import pay_stack
         from cruds import process_cart_payment, add_to_cart, get_user_carts
+
         # from workers.utils.cel_workers import send_mail
 
         res = pay_stack.verify_transaction(ref)
@@ -43,19 +44,28 @@ def verify_paystack_transaction(user_id, ref):
                     "title": cart.property.title,
                     "property_type": cart.property.property_type.value.title(),
                     "amount": cart.property.price * cart.count,
-                    "value": f"{cart.count} plot(s)" if cart.property.property_type.value == "land" else f"{cart.count} unit(s)",
-                } for cart in user_carts
+                    "value": (
+                        f"{cart.count} plot(s)"
+                        if cart.property.property_type.value == "land"
+                        else f"{cart.count} unit(s)"
+                    ),
+                }
+                for cart in user_carts
             ]
-            send_mail({
-                "email": user_carts[0].user.email,
-                "subject": "Your payment is successful",
-                "template_name": "receipts.html",
-                "carts": carts,
-                "full_name": f"{user_carts[0].user.user_profile.last_name} {user_carts[0].user.user_profile.first_name}",
-                "total_amount": sum([cart.property.price * cart.count for cart in user_carts]),
-                "date": datetime.now().strftime("%d %b, %Y"),
-                "year": datetime.now().strftime("%Y"),
-            })
+            send_mail(
+                {
+                    "email": user_carts[0].user.email,
+                    "subject": "Your payment is successful",
+                    "template_name": "receipts.html",
+                    "carts": carts,
+                    "full_name": f"{user_carts[0].user.user_profile.last_name} {user_carts[0].user.user_profile.first_name}",
+                    "total_amount": sum(
+                        [cart.property.price * cart.count for cart in user_carts]
+                    ),
+                    "date": datetime.now().strftime("%d %b, %Y"),
+                    "year": datetime.now().strftime("%Y"),
+                }
+            )
             add_to_cart(user_id, "", "clear_all")
             return True
         return False
