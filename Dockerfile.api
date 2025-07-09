@@ -40,4 +40,4 @@ RUN mkdir -p /app/static/uploads && chown -R $DOCKER_USER:$DOCKER_USER /app/stat
 USER $DOCKER_USER
 
 EXPOSE 8000
-CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "runserver:app"]
+CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:8000", "--timeout", "60", "runserver:app"]
