@@ -1,8 +1,7 @@
-from constants import DB_URI, SECRET_KEY
+from constants import DB_URI, SECRET_KEY, DEV_DB_URI
 
 
 class Config:
-    SQLALCHEMY_DATABASE_URI = DB_URI
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     SECRET_KEY = SECRET_KEY
     SQLALCHEMY_ENGINE_OPTIONS = {"pool_pre_ping": True}
@@ -10,6 +9,7 @@ class Config:
 
 class DevelopmentConfig(Config):
     DEBUG = True
+    SQLALCHEMY_DATABASE_URI = DEV_DB_URI
 
 
 class TestingConfig(Config):
