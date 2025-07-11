@@ -242,6 +242,7 @@ def get_all_properties(page, per_page, property_type, property_status, city, sta
         logger.error(f"Error getting all properties: {e}")
         return None, 0
 
+
 # get latest 3 properties that is available
 def get_latest_properties():
     try:
