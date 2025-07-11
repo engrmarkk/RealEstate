@@ -6,7 +6,7 @@ from cruds import (
     get_one_property,
     is_favorited,
     get_redis_cart_count,
-    get_latest_properties
+    get_latest_properties,
 )
 from flask_login import current_user
 
