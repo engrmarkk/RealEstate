@@ -16,7 +16,7 @@ from cruds import (
     get_one_trans,
     get_user_by_phone,
     get_one_property,
-    get_one_purchase
+    get_one_purchase,
 )
 from flask_login import login_required, current_user
 from constants import PAYSTACK_PUBLIC_KEY
@@ -196,9 +196,9 @@ def download_receipt_pdf(property_id, purchase_id):
         )
 
         pdf = HTML(
-                    string=rendered_html,
-                    base_url=request.root_url,
-                ).write_pdf(presentational_hints=True)
+            string=rendered_html,
+            base_url=request.root_url,
+        ).write_pdf(presentational_hints=True)
 
         filename = f"receipt_{current_user.user_profile.last_name}_{prop.title}.pdf"
 
