@@ -1,5 +1,5 @@
 from . import users_blp
-from flask import render_template, request, jsonify, redirect, url_for
+from flask import render_template, request, jsonify, redirect, url_for, make_response
 from utils.util import (
     session_alert_bg_color,
     validate_password,
@@ -15,12 +15,16 @@ from cruds import (
     get_property_purchases,
     get_one_trans,
     get_user_by_phone,
+    get_one_property,
+    get_one_purchase
 )
 from flask_login import login_required, current_user
 from constants import PAYSTACK_PUBLIC_KEY
 from logger import logger
 from extensions import db
 from services.cloudnary import upload_image
+from weasyprint import HTML
+from datetime import datetime
 
 
 @users_blp.route("/dashboard")
@@ -174,3 +178,37 @@ def payment_verify():
         logger.exception(e)
         session_alert_bg_color("Payment failed", "red")
         return redirect(url_for("users_blp.cart"))
+
+
+# download receipt in pdf
+@users_blp.route("/download-receipt/<string:property_id>/<string:purchase_id>")
+@login_required
+def download_receipt_pdf(property_id, purchase_id):
+    try:
+        prop = get_one_property(property_id)
+        purchase = get_one_purchase(purchase_id)
+        rendered_html = render_template(
+            "receipts/prop_receipt.html",
+            prop=prop,
+            purchase=purchase,
+            date=datetime.now().strftime("%d %B, %Y"),
+            year=datetime.now().strftime("%Y"),
+        )
+
+        pdf = HTML(
+                    string=rendered_html,
+                    base_url=request.root_url,
+                ).write_pdf(presentational_hints=True)
+
+        filename = f"receipt_{current_user.user_profile.last_name}_{prop.title}.pdf"
+
+        response = make_response(pdf)
+        response.headers["Content-Type"] = "application/pdf"
+        response.headers["Content-Disposition"] = f'attachment; filename="{filename}"'
+
+        return response
+    except Exception as e:
+        logger.error(f"Error downloading receipt: {e}")
+        logger.exception(e)
+        session_alert_bg_color("Failed to download receipt", "red")
+        return redirect(url_for("users_blp.dashboard"))
