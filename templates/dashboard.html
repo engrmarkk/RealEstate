@@ -90,6 +90,7 @@
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Count</th>
                                 <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Property</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Receipt</th>
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
@@ -105,6 +106,11 @@
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">{{ purchase.property.property_type.value|capitalize }}</td>
+                                <td class="px-6 py-4 whitespace-nowrap">
+                                    <a href="/download-receipt/{{ purchase.property_id }}/{{ purchase.id }}" title="Download PDF Receipt" class="text-primary hover:text-accent" style="display:inline-block;">
+                                        <i class="fas fa-file-pdf fa-lg"></i>
+                                    </a>
+                                </td>
                             </tr>
                             {% endfor %}
                             {% else %}
