@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 DB_URI = os.getenv("DB_URI")
+DEV_DB_URI = os.getenv("DEV_DB_URI")
 CONFIG_NAME = os.getenv("CONFIG_NAME")
 SECRET_KEY = os.getenv("SECRET_KEY")
 REDIS_URL = os.getenv("REDIS_URL")
