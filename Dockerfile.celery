@@ -15,7 +15,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libharfbuzz0b \
     libpangoft2-1.0-0 \
     libcairo2-dev \
-    libgirepository1.0-dev \
+    libgirepository-1.0-1 \
     tzdata \
  && apt-get clean \
  && rm -rf /var/lib/apt/lists/*
@@ -42,11 +42,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
     libxml2 \
     libxslt1.1 \
     libcairo2 \
-    libgdk-pixbuf2.0-0 \
-    libffi7 \
+    libgdk-pixbuf-2.0-0 \
+    libffi8 \
     shared-mime-info \
-    libgirepository-1.0-1 \
-    libgobject-2.0-0 \
     libglib2.0-0 \
     libcairo-gobject2 \
     libfontconfig1 \
