@@ -141,7 +141,7 @@ def save_land_property(
     try:
         from workers.background_tasks import save_property_images
 
-        property = Property(
+        property_inst = Property(
             title=title,
             address=address,
             description=description,
@@ -151,9 +151,9 @@ def save_land_property(
             property_type=PropertyType.land,
             land_details=LandDetails(size=size, area_sqft=area_sqft),
         )
-        property = save_and_commit(property)
-        save_property_images.delay(property.id, images, title)
-        return property
+        property_saved = save_and_commit(property_inst)
+        save_property_images.delay(property_saved.id, images, title)
+        return property_saved
     except Exception as e:
         logger.error(f"Error saving land property: {e}")
         return None
@@ -181,7 +181,7 @@ def save_apartment_property(
     try:
         from workers.background_tasks import save_property_images
 
-        property = Property(
+        property_inst = Property(
             title=title,
             address=address,
             description=description,
@@ -204,9 +204,9 @@ def save_apartment_property(
                 is_pet_friendly=is_pet_friendly,
             ),
         )
-        property = save_and_commit(property)
-        save_property_images.delay(property.id, images, title)
-        return property
+        property_saved = save_and_commit(property_inst)
+        save_property_images.delay(property_saved.id, images, title)
+        return property_saved
     except Exception as e:
         logger.error(f"Error saving apartment property: {e}")
         return None
@@ -235,15 +235,33 @@ def get_all_properties(page, per_page, property_type, property_status, city, sta
             Property.property_status == property_status if property_status else True,
             Property.state == state if state else True,
             Property.city == city if city else True,
+            Property.available == True,
         ).count()
         return properties, total_properties
     except Exception as e:
         logger.error(f"Error getting all properties: {e}")
         return None, 0
 
+# get latest 3 properties that is available
+def get_latest_properties():
+    try:
+        properties = (
+            Property.query.filter(Property.available == True)
+            .order_by(Property.created_at.desc())
+            .limit(3)
+        )
+        return properties
+    except Exception as e:
+        logger.error(f"Error getting latest properties: {e}")
+        return None
+
 
 def get_one_property(property_id):
     return Property.query.filter_by(id=property_id).first()
+
+
+def get_one_purchase(purchase_id):
+    return PropertyPurchased.query.filter_by(id=purchase_id).first()
 
 
 # fav and un-fav property
