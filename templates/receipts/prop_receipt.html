@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Property Receipt - DreamHome Realty</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f4f4;font-family:'Poppins',Arial,sans-serif;font-size:1.08rem;">
+  <div style="max-width:700px;margin:40px auto;background:#fff;border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.09);overflow:hidden;">
+    <!-- Letterhead -->
+    <div style="padding:32px 40px 18px 40px;border-bottom:1.5px solid #e5e7eb;background:#fff;display:flex;align-items:center;">
+      <span style="font-size:40px;color:#4F46E5;flex-shrink:0;">🏠</span>
+      <div style="margin-left:18px;">
+        <div style="font-size:2rem;font-family:'Playfair Display',serif;font-weight:700;color:#22223b;letter-spacing:0.5px;">DreamHome Realty</div>
+        <div style="font-size:1.05rem;color:#6b7280;margin-top:2px;">123 Real Estate Ave, NY</div>
+        <div style="font-size:1.05rem;color:#6b7280;">info@dreamhome.com &bull; (123) 456-7890</div>
+      </div>
+    </div>
+    <!-- Receipt Info -->
+    <div style="padding:32px 40px 0 40px;">
+      <div style="display:flex;justify-content:space-between;flex-wrap:wrap;align-items:flex-end;">
+        <div style="margin-bottom:18px;">
+          <div style="font-size:1.3rem;color:#4F46E5;font-family:'Playfair Display',serif;font-weight:600;margin-bottom:6px;">Property Receipt</div>
+          <div style="color:#374151;font-size:1.05rem;">Date: <span style="color:#22223b;font-weight:500;">{{ date }}</span></div>
+        </div>
+        <div style="margin-bottom:18px;text-align:right;">
+          <div style="color:#6b7280;font-size:1.05rem;">Customer</div>
+          <div style="color:#22223b;font-size:1.15rem;font-weight:600;">{{ current_user.user_profile.last_name|title }} {{ current_user.user_profile.first_name|title }}</div>
+          <div style="color:#6b7280;font-size:1.05rem;">{{ current_user.email }}</div>
+        </div>
+      </div>
+      <div style="margin:18px 0 32px 0;color:#374151;font-size:1.08rem;">Thank you for your patronage! Below are the details of your property transaction(s):</div>
+    </div>
+    <!-- Properties List -->
+    <div style="padding:0 40px 0 40px;">
+      <div style="background:#f9fafb;border-radius:10px;padding:24px 24px 18px 24px;margin-bottom:24px;box-shadow:0 1px 4px rgba(79,70,229,0.04);border:1px solid #e5e7eb;">
+        <div style="font-size:1.18rem;color:#4F46E5;font-family:'Playfair Display',serif;font-weight:600;margin-bottom:8px;">{{ prop.title }}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:24px 40px;">
+          <div style="min-width:180px;margin-bottom:8px;">
+            <span style="color:#6b7280;font-size:1.01rem;">Type:</span>
+            <span style="color:#22223b;font-size:1.07rem;font-weight:500;">{{ prop.property_type.value|title }}</span>
+          </div>
+          <div style="min-width:180px;margin-bottom:8px;">
+            <span style="color:#6b7280;font-size:1.01rem;">Amount:</span>
+            <span style="color:#22223b;font-size:1.07rem;font-weight:600;">₦{{ '{:,.2f}'.format(purchase.amount/purchase.count) }}</span>
+          </div>
+        </div>
+        <div style="margin:10px 0 0 0;color:#6b7280;font-size:1.01rem;">Listing Type:</div>
+        <div style="color:#22223b;font-size:1.07rem;margin-bottom:8px;">{{ prop.listing_type.value|title }}</div>
+        <div style="margin:10px 0 0 0;color:#6b7280;font-size:1.01rem;">Address:</div>
+        <div style="color:#22223b;font-size:1.07rem;margin-bottom:8px;">{{ prop.address }}</div>
+        <div style="margin:10px 0 0 0;color:#6b7280;font-size:1.01rem;">Date Purchased:</div>
+        <div style="color:#22223b;font-size:1.07rem;margin-bottom:8px;">{{ purchase.created_at.strftime('%B %d, %Y') }}</div>
+        {% if prop.property_type.value == 'land' and prop.land_details %}
+        <div style="margin-top:10px;margin-bottom:8px;">
+          <div style="color:#4F46E5;font-size:1.07rem;font-weight:600;margin-bottom:8px;">Land Details:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0 32px;">
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Area (sqft):</span> <span style="color:#22223b;font-weight:500;">{{ prop.land_details.area_sqft }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Plot Size:</span> <span style="color:#22223b;font-weight:500;">{{ purchase.count }}</span>
+            </div>
+          </div>
+        </div>
+        {% elif prop.property_type.value == 'apartment' and prop.house_details %}
+        <div style="margin-top:10px;margin-bottom:8px;">
+          <div style="color:#4F46E5;font-size:1.07rem;font-weight:600;margin-bottom:8px;">House Details:</div>
+          <div style="display:flex;flex-wrap:wrap;gap:0 32px;">
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Bedrooms:</span> <span style="color:#22223b;font-weight:500;">{{ prop.house_details.bedrooms }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Bathrooms:</span> <span style="color:#22223b;font-weight:500;">{{ prop.house_details.bathrooms }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Garage Spaces:</span> <span style="color:#22223b;font-weight:500;">{{ prop.house_details.garage_spaces }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Pool:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.has_pool else 'No' }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Garden:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.has_garden else 'No' }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Balcony:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.has_balcony else 'No' }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Elevator:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.has_elevator else 'No' }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Furnished:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.is_furnished else 'No' }}</span>
+            </div>
+            <div style="flex:1 1 30%;min-width:160px;margin-bottom:10px;font-size:1.08rem;">
+              <span style="color:#6b7280;">Pet Friendly:</span> <span style="color:#22223b;font-weight:500;">{{ 'Yes' if prop.house_details.is_pet_friendly else 'No' }}</span>
+            </div>
+          </div>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+    <!-- Summary -->
+    <div style="padding:0 40px 32px 40px;">
+      <div style="background:#e0e7ff;border-radius:8px;padding:18px 24px;color:#3730a3;font-size:1.13rem;font-weight:600;display:flex;justify-content:space-between;align-items:center;">
+        <span>Total Amount Paid:</span>
+        <span style="color:#4F46E5;font-size:1.25rem;font-weight:700;">₦{{ '{:,.2f}'.format(purchase.amount) }}</span>
+      </div>
+      <div style="margin-top:18px;color:#6b7280;font-size:1.01rem;text-align:center;">If you have any questions, please contact us at <a href="mailto:info@dreamhome.com" style="color:#4F46E5;text-decoration:underline;">info@dreamhome.com</a> or call (123) 456-7890.</div>
+    </div>
+    <!-- Footer -->
+    <div style="background:#f3f4f6;padding:18px 40px 14px 40px;text-align:center;font-size:0.98rem;color:#6b7280;border-top:1px solid #e5e7eb;">
+      <div style="margin-bottom:4px;">&copy; {{ year }} DreamHome Realty. All rights reserved.</div>
+      <div style="color:#a1a1aa;">123 Real Estate Ave, NY &bull; info@dreamhome.com &bull; (123) 456-7890</div>
+    </div>
+  </div>
+</body>
+</html>
