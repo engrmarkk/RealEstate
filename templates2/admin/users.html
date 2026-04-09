@@ -1,0 +1,92 @@
+{% extends "admin/layout.html" %}
+
+{% block title %}Users{% endblock %}
+
+{% block page_title %}Users{% endblock %}
+
+{% block content %}
+<div class="bg-white rounded-xl shadow-lg p-6">
+    <div class="flex items-center justify-between mb-6">
+        <h2 class="text-2xl font-bold text-dark">All Users</h2>
+        <span class="text-gray-500">Total: {{ total_users }}</span>
+    </div>
+    {% if users and users.items|length > 0 %}
+    <div class="overflow-x-auto rounded-lg">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-primary text-white">
+                <tr>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Profile</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Email</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">First Name</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Last Name</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Phone</th>
+                    <th class="px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider">Created At</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-100">
+                {% for user in users.items %}
+                <tr class="hover:bg-light transition">
+                    <td class="px-4 py-3">
+                        {% if user.user_profile and user.user_profile.profile_image %}
+                            <img src="{{ user.user_profile.profile_image }}" alt="Profile" class="w-10 h-10 rounded-full border-2 border-accent object-cover">
+                        {% else %}
+                            <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-gray-400">
+                                <i class="fas fa-user"></i>
+                            </div>
+                        {% endif %}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-700">{{ user.email }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">{{ user.user_profile.first_name if user.user_profile else '' }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">{{ user.user_profile.last_name if user.user_profile else '' }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-700">{{ user.user_profile.phone if user.user_profile else '' }}</td>
+                    <td class="px-4 py-3 text-sm text-gray-500">{{ user.created_at.strftime('%Y-%m-%d') if user.created_at else '' }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    <!-- Pagination Controls -->
+    <div class="flex justify-between items-center mt-6">
+        <div class="text-sm text-gray-500">
+            Showing {{ users.first }} - {{ users.last }} of {{ users.total }} users
+        </div>
+        <nav class="inline-flex -space-x-px rounded-md shadow-sm" aria-label="Pagination">
+            {% if users.has_prev %}
+                <a href="{{ url_for('admin_blp.all_users_stats', page=users.prev_num, per_page=users.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">
+                    <i class="fas fa-chevron-left"></i>
+                </a>
+            {% else %}
+                <span class="relative inline-flex items-center px-3 py-2 rounded-l-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                    <i class="fas fa-chevron-left"></i>
+                </span>
+            {% endif %}
+            {% for page_num in users.iter_pages(left_edge=1, left_current=1, right_current=2, right_edge=1) %}
+                {% if page_num %}
+                    {% if users.page == page_num %}
+                        <span class="relative inline-flex items-center px-3 py-2 border border-primary bg-primary text-white text-sm font-bold">{{ page_num }}</span>
+                    {% else %}
+                        <a href="{{ url_for('admin_blp.all_users_stats', page=page_num, per_page=users.per_page) }}" class="relative inline-flex items-center px-3 py-2 border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="relative inline-flex items-center px-3 py-2 border border-gray-200 bg-white text-sm font-medium text-gray-400">…</span>
+                {% endif %}
+            {% endfor %}
+            {% if users.has_next %}
+                <a href="{{ url_for('admin_blp.all_users_stats', page=users.next_num, per_page=users.per_page) }}" class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-300 bg-white text-sm font-medium text-primary hover:bg-light">
+                    <i class="fas fa-chevron-right"></i>
+                </a>
+            {% else %}
+                <span class="relative inline-flex items-center px-3 py-2 rounded-r-md border border-gray-200 bg-gray-100 text-sm font-medium text-gray-400 cursor-not-allowed">
+                    <i class="fas fa-chevron-right"></i>
+                </span>
+            {% endif %}
+        </nav>
+    </div>
+    {% else %}
+    <div class="text-center py-12">
+        <i class="fas fa-users text-5xl text-gray-300 mb-4"></i>
+        <h3 class="text-xl font-semibold text-gray-500">No users found.</h3>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

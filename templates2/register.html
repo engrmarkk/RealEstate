@@ -1,0 +1,202 @@
+{% extends "base.html" %}
+
+{% block title %}Register | DreamHome{% endblock %}
+
+{% block head %}
+    <style>
+        .fade-in {
+            animation: fadeIn 0.4s ease;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+{% endblock %}
+
+{% block content %}
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary-50 to-purple-50 py-12">
+    <div class="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
+        <div class="text-center mb-8">
+            <h2 class="text-3xl font-serif font-bold text-dark mb-2">Create Account</h2>
+            <p class="text-gray-600">Join DreamHome to find your perfect property</p>
+        </div>
+        
+        <form id="registerForm" method="POST" action="" novalidate autocomplete="off">
+            <!-- hide csrf token -->
+            <input type="hidden" name="csrf_token" value="{{ csrf_token }}">
+            <div class="mb-6">
+                <label for="name" class="block text-gray-700 text-sm font-medium mb-2">Full Name</label>
+                <div class="relative">
+                    <input type="text" id="name" name="name" required class="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="Last Name, First Name" value="{{ name }}">
+                    <span class="absolute right-3 top-3 hidden text-green-500" id="nameSuccess"><i class="fas fa-check-circle"></i></span>
+                    <span class="absolute right-3 top-3 hidden text-red-500" id="nameErrorIcon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+                <p class="text-red-500 text-xs mt-1 fade-in hidden" id="nameError">Please enter both last and first name.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
+                <div class="relative">
+                    <input type="email" id="email" name="email" required class="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="you@example.com" value="{{ email }}">
+                    <span class="absolute right-3 top-3 hidden text-green-500" id="emailSuccess"><i class="fas fa-check-circle"></i></span>
+                    <span class="absolute right-3 top-3 hidden text-red-500" id="emailErrorIcon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+                <p class="text-red-500 text-xs mt-1 fade-in hidden" id="emailError">Please enter a valid email address.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
+                <div class="relative">
+                    <input type="password" id="password" name="password" required class="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" value="{{ password }}">
+                    <span class="absolute right-3 top-3 hidden text-green-500" id="passwordSuccess"><i class="fas fa-check-circle"></i></span>
+                    <span class="absolute right-3 top-3 hidden text-red-500" id="passwordErrorIcon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+                <p class="text-red-500 text-xs mt-1 fade-in hidden" id="passwordError">Password must be at least 8 characters.</p>
+            </div>
+            
+            <div class="mb-6">
+                <label for="confirm_password" class="block text-gray-700 text-sm font-medium mb-2">Confirm Password</label>
+                <div class="relative">
+                    <input type="password" id="confirm_password" name="confirm_password" required class="peer w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" value="{{ confirm_password }}">
+                    <span class="absolute right-3 top-3 hidden text-green-500" id="confirmPasswordSuccess"><i class="fas fa-check-circle"></i></span>
+                    <span class="absolute right-3 top-3 hidden text-red-500" id="confirmPasswordErrorIcon"><i class="fas fa-exclamation-circle"></i></span>
+                </div>
+                <p class="text-red-500 text-xs mt-1 fade-in hidden" id="confirmPasswordError">Passwords do not match.</p>
+            </div>
+            
+            <div class="flex items-center mb-6">
+                <input type="checkbox" id="terms" name="terms" required class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded transition-all">
+                <label for="terms" class="ml-2 block text-sm text-gray-700">
+                    I agree to the <a href="#" class="text-primary hover:text-purple-700">Terms of Service</a> and <a href="#" class="text-primary hover:text-purple-700">Privacy Policy</a>
+                </label>
+            </div>
+            
+            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-primary to-purple-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 shadow-lg opacity-50 cursor-not-allowed" disabled>
+                Create Account
+            </button>
+            
+            <div class="mt-6 text-center">
+                <p class="text-gray-600">Already have an account? <a href="/login" class="text-primary hover:text-purple-700 font-medium">Sign in</a></p>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+    <script>
+        // Helper functions
+        function validateEmail(email) {
+            return /^\S+@\S+\.\S+$/.test(email);
+        }
+        function show(el) { el.classList.remove('hidden'); }
+        function hide(el) { el.classList.add('hidden'); }
+        function setValid(input, icon, errorIcon, errorMsg) {
+            input.classList.remove('border-red-400');
+            input.classList.add('border-green-400');
+            show(icon); hide(errorIcon); hide(errorMsg);
+        }
+        function setInvalid(input, icon, errorIcon, errorMsg) {
+            input.classList.remove('border-green-400');
+            input.classList.add('border-red-400');
+            hide(icon); show(errorIcon); show(errorMsg);
+        }
+
+        // Elements
+        const form = document.getElementById('registerForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const nameInput = document.getElementById('name');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const confirmPasswordInput = document.getElementById('confirm_password');
+        const termsInput = document.getElementById('terms');
+
+        // Icons and error messages
+        const nameSuccess = document.getElementById('nameSuccess');
+        const nameErrorIcon = document.getElementById('nameErrorIcon');
+        const nameError = document.getElementById('nameError');
+        const emailSuccess = document.getElementById('emailSuccess');
+        const emailErrorIcon = document.getElementById('emailErrorIcon');
+        const emailError = document.getElementById('emailError');
+        const passwordSuccess = document.getElementById('passwordSuccess');
+        const passwordErrorIcon = document.getElementById('passwordErrorIcon');
+        const passwordError = document.getElementById('passwordError');
+        const confirmPasswordSuccess = document.getElementById('confirmPasswordSuccess');
+        const confirmPasswordErrorIcon = document.getElementById('confirmPasswordErrorIcon');
+        const confirmPasswordError = document.getElementById('confirmPasswordError');
+
+        // Validation logic
+        function validateForm() {
+            const nameParts = nameInput.value.trim().split(' ').filter(part => part.length > 0);
+            let isNameValid = nameParts.length >= 2;
+            let isEmailValid = validateEmail(emailInput.value.trim());
+            let isPasswordValid = passwordInput.value.length >= 8;
+            let isConfirmPasswordValid = confirmPasswordInput.value === passwordInput.value && confirmPasswordInput.value.length > 0;
+            let isTermsChecked = termsInput.checked;
+
+            if(nameInput.value.trim() !== ''){
+                isNameValid ? setValid(nameInput, nameSuccess, nameErrorIcon, nameError) : setInvalid(nameInput, nameSuccess, nameErrorIcon, nameError);
+            }
+
+            if(emailInput.value.trim() !== ''){
+                isEmailValid ? setValid(emailInput, emailSuccess, emailErrorIcon, emailError) : setInvalid(emailInput, emailSuccess, emailErrorIcon, emailError);
+            }
+
+            if(passwordInput.value !== ''){
+                 isPasswordValid ? setValid(passwordInput, passwordSuccess, passwordErrorIcon, passwordError) : setInvalid(passwordInput, passwordSuccess, passwordErrorIcon, passwordError);
+            }
+
+            if(confirmPasswordInput.value !== ''){
+                 isConfirmPasswordValid ? setValid(confirmPasswordInput, confirmPasswordSuccess, confirmPasswordErrorIcon, confirmPasswordError) : setInvalid(confirmPasswordInput, confirmPasswordSuccess, confirmPasswordErrorIcon, confirmPasswordError);
+            }
+
+
+            const isFormValid = isNameValid && isEmailValid && isPasswordValid && isConfirmPasswordValid && isTermsChecked;
+
+            // Button state
+            if (isFormValid) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.add('hover:from-purple-600', 'hover:to-primary', 'hover:shadow-xl');
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
+                submitBtn.classList.remove('hover:from-purple-600', 'hover:to-primary', 'hover:shadow-xl');
+            }
+        }
+
+        // Real-time validation
+        [nameInput, emailInput, passwordInput, confirmPasswordInput, termsInput].forEach(input => {
+            input.addEventListener('input', validateForm);
+        });
+
+        // On blur, show error if field is empty or invalid
+        [nameInput, emailInput, passwordInput, confirmPasswordInput].forEach(input => {
+            input.addEventListener('blur', function() {
+                validateForm();
+                // Optionally, you can force the error to show for this field if it's empty
+                if (input.value.trim() === '') {
+                    // Trigger the error state for this field only
+                    if (input === nameInput) setInvalid(nameInput, nameSuccess, nameErrorIcon, nameError);
+                    if (input === emailInput) setInvalid(emailInput, emailSuccess, emailErrorIcon, emailError);
+                    if (input === passwordInput) setInvalid(passwordInput, passwordSuccess, passwordErrorIcon, passwordError);
+                    if (input === confirmPasswordInput) setInvalid(confirmPasswordInput, confirmPasswordSuccess, confirmPasswordErrorIcon, confirmPasswordError);
+                }
+            });
+        });
+
+        // Prevent form submission if invalid
+        form.addEventListener('submit', function(e) {
+            if (submitBtn.disabled) {
+                e.preventDefault();
+                // Optionally trigger validation on all fields to show errors
+                validateForm();
+            }
+        });
+
+        // Initial check
+        validateForm();
+    </script>
+{% endblock %}

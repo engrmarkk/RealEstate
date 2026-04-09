@@ -1,0 +1,190 @@
+{% extends "admin/layout.html" %}
+{% block title %}Add Apartment{% endblock %}
+
+{% block page_title %}Add New Apartment{% endblock %}
+{% block content %}
+<div class="max-w-4xl mx-auto py-10 px-4 sm:px-6 lg:px-8">
+    <h1 class="text-2xl font-bold mb-8 text-center text-primary">Add New Apartment</h1>
+    <form method="post" enctype="multipart/form-data" class="bg-white rounded-xl shadow-lg p-8 space-y-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Title</label>
+                <input type="text" name="title" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Price (₦)</label>
+                <input type="number" name="price" step="0.01" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Listing Type</label>
+                <select name="listing_type" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Select Listing Type</option>
+                    <option value="sale">For Sale</option>
+                    <option value="rent">For Rent</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">State</label>
+                <select id="state-select" name="state" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Select State</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">City</label>
+                <select id="city-select" name="city" required class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+                    <option value="">Select City</option>
+                </select>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-gray-700 font-semibold mb-2">Address</label>
+                <input type="text" name="address" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div class="md:col-span-2">
+                <label class="block text-gray-700 font-semibold mb-2">Description</label>
+                <textarea name="description" rows="3" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required></textarea>
+            </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Bedrooms</label>
+                <input type="number" name="bedrooms" min="0" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Bathrooms</label>
+                <input type="number" name="bathrooms" min="0" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" required>
+            </div>
+            <div>
+                <label class="block text-gray-700 font-semibold mb-2">Garage Spaces</label>
+                <input type="number" name="garage_spaces" min="0" class="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary">
+            </div>
+        </div>
+        <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+            <div class="flex items-center">
+                <input type="checkbox" name="has_pool" id="has_pool" class="mr-2">
+                <label for="has_pool" class="text-gray-700">Has Pool</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="has_garden" id="has_garden" class="mr-2">
+                <label for="has_garden" class="text-gray-700">Has Garden</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="has_balcony" id="has_balcony" class="mr-2">
+                <label for="has_balcony" class="text-gray-700">Has Balcony</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="has_elevator" id="has_elevator" class="mr-2">
+                <label for="has_elevator" class="text-gray-700">Has Elevator</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="is_furnished" id="is_furnished" class="mr-2">
+                <label for="is_furnished" class="text-gray-700">Furnished</label>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" name="is_pet_friendly" id="is_pet_friendly" class="mr-2">
+                <label for="is_pet_friendly" class="text-gray-700">Pet Friendly</label>
+            </div>
+        </div>
+        <div>
+            <label class="block text-gray-700 font-semibold mb-2">Upload Images</label>
+            <div id="image-upload-group" class="flex flex-wrap gap-4"></div>
+            <div class="text-sm text-gray-500 mt-2">You can add up to 10 images.</div>
+        </div>
+        <div class="flex justify-end">
+            <button type="submit" class="px-8 py-3 bg-primary text-white rounded-lg font-semibold text-lg hover:bg-purple-700 transition-colors duration-200">Add Apartment</button>
+        </div>
+    </form>
+</div>
+
+<style>
+.image-upload-slot { min-width: 7rem; min-height: 7rem; }
+.image-preview img { width: 100%; height: 100%; object-fit: cover; border-radius: 0.75rem; }
+</style>
+
+<script>
+// --- Image Upload Section ---
+const maxImages = 10;
+const imageUploadGroup = document.getElementById('image-upload-group');
+
+function createImageSlot() {
+  const slot = document.createElement('div');
+  slot.className = 'image-upload-slot relative group';
+  slot.innerHTML = `
+    <input type="file" accept="image/*" class="hidden image-input" name="images" onchange="previewImage(event, this)">
+    <div class=\"image-preview bg-gray-100 border-2 border-dashed border-gray-300 rounded-xl w-28 h-28 flex items-center justify-center cursor-pointer transition group-hover:border-blue-400\" onclick=\"this.previousElementSibling.click()\">
+      <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-10 w-10 text-gray-400\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M3 7v10a2 2 0 002 2h14a2 2 0 002-2V7M16 3H8a2 2 0 00-2 2v0a2 2 0 002 2h8a2 2 0 002-2v0a2 2 0 00-2-2z\" /><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M8 21h8\" /></svg>
+    </div>
+    <button type=\"button\" class=\"absolute top-1 right-1 bg-white rounded-full p-1 shadow-md hidden group-hover:block\" aria-label=\"Remove\" onclick=\"removeImageSlot(this)\">
+      <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-5 w-5 text-red-500\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M6 18L18 6M6 6l12 12\" /></svg>
+    </button>
+  `;
+  return slot;
+}
+
+function createAddMoreSlot() {
+  const slot = document.createElement('div');
+  slot.className = 'image-upload-slot flex items-center justify-center w-28 h-28 bg-gray-50 border-2 border-dashed border-blue-300 rounded-xl cursor-pointer hover:bg-blue-50 transition';
+  slot.innerHTML = `
+    <svg xmlns=\"http://www.w3.org/2000/svg\" class=\"h-10 w-10 text-blue-500\" fill=\"none\" viewBox=\"0 0 24 24\" stroke=\"currentColor\"><path stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"2\" d=\"M12 4v16m8-8H4\" /></svg>
+  `;
+  slot.onclick = function() {
+    const slots = imageUploadGroup.querySelectorAll('.image-upload-slot:not(.flex)');
+    if (slots.length < maxImages) {
+      const newSlot = createImageSlot();
+      imageUploadGroup.insertBefore(newSlot, slot);
+      if (slots.length + 1 === maxImages) slot.style.display = 'none';
+    }
+  };
+  return slot;
+}
+
+function previewImage(event, input) {
+  const preview = input.nextElementSibling;
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      preview.innerHTML = `<img src="${e.target.result}" alt="Image Preview">`;
+      input.parentElement.querySelector('button').classList.remove('hidden');
+    };
+    reader.readAsDataURL(file);
+  }
+}
+function removeImageSlot(btn) {
+  const slot = btn.parentElement;
+  slot.remove();
+  const addMore = imageUploadGroup.querySelector('.image-upload-slot.flex');
+  if (addMore) addMore.style.display = '';
+}
+// Initialize 4 slots and add-more slot
+imageUploadGroup.innerHTML = '';
+for (let i = 0; i < 4; i++) imageUploadGroup.appendChild(createImageSlot());
+imageUploadGroup.appendChild(createAddMoreSlot());
+
+// --- Nigerian States & Cities from Static JSON ---
+const stateSelect = document.getElementById('state-select');
+const citySelect = document.getElementById('city-select');
+
+fetch('/admin/static/ng_states_cities.json')
+  .then(res => res.json())
+  .then(statesData => {
+    // Populate states
+    Object.keys(statesData).forEach(state => {
+      const opt = document.createElement('option');
+      opt.value = state;
+      opt.textContent = state;
+      stateSelect.appendChild(opt);
+    });
+    // On state change, populate cities
+    stateSelect.addEventListener('change', function() {
+      citySelect.innerHTML = '<option value="">Select City</option>';
+      if (!this.value) return;
+      statesData[this.value].forEach(city => {
+        const opt = document.createElement('option');
+        opt.value = city;
+        opt.textContent = city;
+        citySelect.appendChild(opt);
+      });
+    });
+  });
+</script>
+{% endblock %}
