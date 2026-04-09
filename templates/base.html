@@ -5,21 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DreamHome Realty - {% block title %}{% endblock %}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     colors: {
-                        primary: '#4F46E5',
-                        secondary: '#10B981',
-                        accent: '#F59E0B',
-                        dark: '#1F2937',
-                        light: '#F3F4F6',
+                        primary: '#1e3a5f',      // Deep navy blue
+                        secondary: '#c9a961',    // Warm gold
+                        accent: '#2d5a8c',       // Lighter navy
+                        dark: '#0f1419',         // Almost black
+                        light: '#f8f9fa',        // Off white
+                        muted: '#6b7280',        // Muted gray
                     },
                     fontFamily: {
-                        sans: ['Poppins', 'sans-serif'],
+                        sans: ['Inter', 'sans-serif'],
                         serif: ['Playfair Display', 'serif'],
                     },
                 }
@@ -28,38 +29,40 @@
     </script>
     {% block head %}{% endblock %}
 </head>
-<body class="bg-gray-50 font-sans">
+<body class="bg-light font-sans text-gray-900">
     <!-- Navigation -->
-    <nav class="bg-gradient-to-r from-primary to-purple-600 shadow-lg">
+    <nav class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16 items-center">
                 <div class="flex items-center">
                     <a href="/" class="flex-shrink-0 flex items-center">
-                        <i class="fas fa-home text-white text-2xl mr-2"></i>
-                        <span class="text-white text-xl font-bold font-serif">DreamHome</span>
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center mr-3">
+                            <i class="fas fa-home text-white text-lg"></i>
+                        </div>
+                        <span class="text-primary text-xl font-serif font-bold">DreamHome</span>
                     </a>
                 </div>
                 <div class="hidden md:block">
-                    <div class="ml-10 flex items-center space-x-4">
-                        <a href="/" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Home</a>
-                        <a href="/properties" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Properties</a>
-                        <a href="#" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">About</a>
-                        <a href="#" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Contact</a>
+                    <div class="ml-10 flex items-center space-x-1">
+                        <a href="/" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Home</a>
+                        <a href="/properties" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Properties</a>
+                        <a href="#" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">About</a>
+                        <a href="#" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Contact</a>
                         {% if current_user.is_authenticated %}
-                            <a href="/dashboard" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Dashboard</a>
-                            <a href="/logout" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Logout</a>
-                            <a href="/cart" class="relative inline-block px-4 py-2">
-                                <i class="fas fa-shopping-cart text-xl"></i>
+                            <a href="/dashboard" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Dashboard</a>
+                            <a href="/logout" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Logout</a>
+                            <a href="/cart" class="relative inline-block px-4 py-2 text-gray-600 hover:text-primary transition-colors ml-4">
+                                <i class="fas fa-shopping-bag text-lg"></i>
                                 {% if cart_count %}
-                                <span class="absolute -top-2 -right-2 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-secondary rounded-full">{{ cart_count }}</span>
+                                <span class="absolute -top-1 -right-1 inline-flex items-center justify-center px-2 py-0.5 text-xs font-bold text-white bg-secondary rounded-full">{{ cart_count }}</span>
                                 {% endif %}
                             </a>
-                            <a href="/profile" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-xl font-medium flex items-center ml-4" title="Profile">
+                            <a href="/profile" class="text-gray-600 hover:text-primary px-4 py-2 text-lg transition-colors ml-2" title="Profile">
                                 <i class="fas fa-user-circle"></i>
                             </a>
                         {% else %}
-                            <a href="/login" class="text-white hover:bg-primary-700 px-3 py-2 rounded-md text-sm font-medium">Login</a>
-                            <a href="/register" class="bg-accent text-dark hover:bg-yellow-500 px-3 py-2 rounded-md text-sm font-medium">Register</a>
+                            <a href="/login" class="text-gray-600 hover:text-primary px-3 py-2 text-sm font-medium transition-colors">Login</a>
+                            <a href="/register" class="bg-primary hover:bg-accent text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors ml-4">Register</a>
                         {% endif %}
                     </div>
                 </div>
@@ -73,60 +76,82 @@
     </main>
 
     <!-- Footer -->
-    <footer class="bg-gradient-to-r from-dark to-gray-800 text-white py-12">
+    <footer class="bg-dark text-gray-300 py-16">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
                 <div>
-                    <h3 class="text-xl font-serif font-bold mb-4">DreamHome Realty</h3>
-                    <p class="text-gray-300">Finding your perfect home since 2010. We specialize in luxury properties and unique living spaces.</p>
-                </div>
-                <div>
-                    <h4 class="text-lg font-serif font-semibold mb-4">Quick Links</h4>
-                    <ul class="space-y-2">
-                        <li><a href="/" class="text-gray-300 hover:text-white">Home</a></li>
-                        <li><a href="/properties" class="text-gray-300 hover:text-white">Properties</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">About Us</a></li>
-                        <li><a href="#" class="text-gray-300 hover:text-white">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-serif font-semibold mb-4">Contact Us</h4>
-                    <ul class="space-y-2">
-                        <li class="flex items-center"><i class="fas fa-map-marker-alt mr-2"></i> 123 Real Estate Ave, NY</li>
-                        <li class="flex items-center"><i class="fas fa-phone mr-2"></i> (123) 456-7890</li>
-                        <li class="flex items-center"><i class="fas fa-envelope mr-2"></i> info@dreamhome.com</li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="text-lg font-serif font-semibold mb-4">Follow Us</h4>
-                    <div class="flex space-x-4">
-                        <a href="#" class="text-gray-300 hover:text-white text-xl"><i class="fab fa-facebook"></i></a>
-                        <a href="#" class="text-gray-300 hover:text-white text-xl"><i class="fab fa-twitter"></i></a>
-                        <a href="#" class="text-gray-300 hover:text-white text-xl"><i class="fab fa-instagram"></i></a>
-                        <a href="#" class="text-gray-300 hover:text-white text-xl"><i class="fab fa-linkedin"></i></a>
-                    </div>
-                    <div class="mt-4">
-                        <p class="text-gray-300">Subscribe to our newsletter</p>
-                        <div class="mt-2 flex">
-                            <input type="email" placeholder="Your email" class="px-3 py-2 rounded-l text-dark w-full">
-                            <button class="bg-accent text-dark px-4 py-2 rounded-r"><i class="fas fa-paper-plane"></i></button>
+                    <div class="flex items-center mb-4">
+                        <div class="w-10 h-10 rounded-full bg-gradient-to-br from-secondary to-yellow-600 flex items-center justify-center mr-3">
+                            <i class="fas fa-home text-dark text-lg"></i>
                         </div>
+                        <h3 class="text-xl font-serif font-bold text-white">DreamHome</h3>
+                    </div>
+                    <p class="text-gray-400 text-sm leading-relaxed">Discover exceptional properties and realize your real estate dreams with expert guidance and premium service.</p>
+                </div>
+                <div>
+                    <h4 class="text-lg font-serif font-semibold text-white mb-5">Quick Links</h4>
+                    <ul class="space-y-3">
+                        <li><a href="/" class="text-gray-400 hover:text-secondary transition-colors text-sm">Home</a></li>
+                        <li><a href="/properties" class="text-gray-400 hover:text-secondary transition-colors text-sm">Properties</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-secondary transition-colors text-sm">About Us</a></li>
+                        <li><a href="#" class="text-gray-400 hover:text-secondary transition-colors text-sm">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-serif font-semibold text-white mb-5">Contact</h4>
+                    <ul class="space-y-3 text-sm">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-secondary mr-3 mt-0.5 flex-shrink-0"></i>
+                            <span class="text-gray-400">123 Real Estate Ave, New York, NY 10001</span>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-phone text-secondary mr-3 flex-shrink-0"></i>
+                            <a href="tel:+1234567890" class="text-gray-400 hover:text-secondary transition-colors">(123) 456-7890</a>
+                        </li>
+                        <li class="flex items-center">
+                            <i class="fas fa-envelope text-secondary mr-3 flex-shrink-0"></i>
+                            <a href="mailto:info@dreamhome.com" class="text-gray-400 hover:text-secondary transition-colors">info@dreamhome.com</a>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-lg font-serif font-semibold text-white mb-5">Follow Us</h4>
+                    <div class="flex space-x-4 mb-6">
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-secondary text-white flex items-center justify-center transition-colors text-sm">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-secondary text-white flex items-center justify-center transition-colors text-sm">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-secondary text-white flex items-center justify-center transition-colors text-sm">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="w-10 h-10 rounded-full bg-gray-700 hover:bg-secondary text-white flex items-center justify-center transition-colors text-sm">
+                            <i class="fab fa-linkedin-in"></i>
+                        </a>
+                    </div>
+                    <p class="text-gray-400 text-xs mb-3">Subscribe for updates</p>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="flex-1 px-3 py-2 bg-gray-700 text-white text-sm rounded-l border border-gray-600 focus:outline-none focus:border-secondary focus:bg-gray-800" />
+                        <button class="bg-secondary hover:bg-yellow-600 text-dark px-3 py-2 rounded-r font-medium transition-colors text-sm">
+                            <i class="fas fa-arrow-right"></i>
+                        </button>
                     </div>
                 </div>
             </div>
-            <div class="border-t border-gray-700 mt-8 pt-8 text-center text-gray-400">
-                <p>&copy; 2023 DreamHome Realty. All rights reserved.</p>
+            <div class="border-t border-gray-700 pt-8 text-center text-gray-500 text-sm">
+                <p>&copy; 2024 DreamHome Realty. All rights reserved.</p>
             </div>
         </div>
     </footer>
 
     {% if alert %}
     <div id="toast"
-         class="fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg text-white flex items-center space-x-3 transition-all duration-500 transform translate-x-0"
-         style="background: {{ bg_color|default('#4F46E5') }}; min-width: 220px; max-width: 90vw;">
-      <span class="text-lg"><i class="fas fa-info-circle"></i></span>
-      <span class="font-medium">{{ alert }}</span>
-      <button id="toastCloseBtn" class="ml-4 focus:outline-none">
+         class="fixed top-6 right-6 z-50 px-6 py-4 rounded-lg shadow-lg text-white flex items-center space-x-3 transition-all duration-500 transform translate-x-full"
+         style="background: {{ bg_color|default('#1e3a5f') }}; min-width: 240px; max-width: 90vw;">
+      <span class="text-lg flex-shrink-0"><i class="fas fa-info-circle"></i></span>
+      <span class="font-medium text-sm">{{ alert }}</span>
+      <button id="toastCloseBtn" class="ml-4 focus:outline-none flex-shrink-0">
         <i class="fas fa-times"></i>
       </button>
     </div>
@@ -140,16 +165,9 @@
   function showToast() {
       const toast = document.getElementById('toast');
       if (toast) {
-          // Start with toast hidden (off-screen)
-          toast.classList.add('translate-x-full');
-          
-          // Trigger reflow to enable transition
           void toast.offsetWidth;
-          
-          // Slide in the toast
           toast.classList.remove('translate-x-full');
           
-          // Auto-dismiss after 4 seconds
           toast.dismissTimeout = setTimeout(() => {
               closeToast();
           }, 4000);
@@ -159,15 +177,12 @@
   function closeToast() {
       const toast = document.getElementById('toast');
       if (toast) {
-          // Slide out the toast
           toast.classList.add('translate-x-full');
           
-          // Remove the toast from DOM after transition completes
           toast.addEventListener('transitionend', () => {
               toast.remove();
           }, { once: true });
           
-          // Clear the timeout if it exists
           if (toast.dismissTimeout) {
               clearTimeout(toast.dismissTimeout);
           }
