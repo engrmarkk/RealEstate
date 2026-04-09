@@ -46,6 +46,7 @@ def get_user_by_phone(phone):
 
 # create user along with user profile
 def create_user_at_register(email, password, fullname):
+    print(f"fullname: {fullname}")
     last_name, first_name = fullname.split()
     user = Users(
         email=email,
