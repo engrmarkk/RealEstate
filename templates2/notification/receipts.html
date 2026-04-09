@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt - DreamHome Realty</title>
+  </head>
+  <body style="margin:0;padding:0;background:#f4f4f4;font-family:'Poppins',Arial,sans-serif;">
+    <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f4f4f4;padding:0;margin:0;">
+      <tr>
+        <td align="center" style="padding:30px 10px;">
+          <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:600px;background:#fff;border-radius:10px;box-shadow:0 2px 8px rgba(0,0,0,0.07);overflow:hidden;">
+            <!-- Mature Official Letterhead/Header -->
+            <tr>
+              <td style="background:#fff;padding:24px 32px 16px 32px;border-bottom:1px solid #e5e7eb;">
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td style="vertical-align:top;width:60px;">
+                      <span style="font-size:36px;color:#4F46E5;display:inline-block;vertical-align:top;">🏠</span>
+                    </td>
+                    <td style="vertical-align:top;padding-left:12px;">
+                      <div style="font-size:1.7rem;font-family:'Playfair Display',serif;font-weight:700;color:#22223b;letter-spacing:0.5px;line-height:1.2;">DreamHome Realty</div>
+                      <div style="font-size:1rem;color:#6b7280;font-family:'Poppins',Arial,sans-serif;margin-top:2px;">123 Real Estate Ave, NY</div>
+                      <div style="font-size:1rem;color:#6b7280;font-family:'Poppins',Arial,sans-serif;">info@dreamhome.com &bull; (123) 456-7890</div>
+                    </td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+            <!-- Receipt Body -->
+            <tr>
+              <td style="padding:32px 24px 16px 24px;">
+                <h2 style="margin:0 0 12px 0;font-size:1.5rem;color:#4F46E5;font-family:'Playfair Display',serif;">Payment Receipt</h2>
+                <p style="margin:0 0 24px 0;color:#374151;font-size:1rem;">Thank you for your patronage with DreamHome Realty! Below are your transaction details:</p>
+                <table width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#f9fafb;border-radius:8px;overflow:hidden;margin-bottom:24px;">
+                  <tr>
+                    <td style="padding:12px 16px;color:#6b7280;font-weight:500;">Date:</td>
+                    <td style="padding:12px 16px;color:#111827;">{{ date }}</td>
+                  </tr>
+                  <tr>
+                    <td style="padding:12px 16px;color:#6b7280;font-weight:500;">Customer Name:</td>
+                    <td style="padding:12px 16px;color:#111827;">{{ full_name }}</td>
+                  </tr>
+                </table>
+                <div style="margin-bottom:24px;">
+                  <div style="font-size:1.1rem;color:#22223b;font-weight:600;margin-bottom:8px;">Properties Details:</div>
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="border-collapse:collapse;background:#fff;">
+                    <tr style="background:#f3f4f6;">
+                      <th style="padding:8px 6px;font-size:0.98rem;color:#4F46E5;text-align:left;border-bottom:1px solid #e5e7eb;">Name</th>
+                      <th style="padding:8px 6px;font-size:0.98rem;color:#4F46E5;text-align:left;border-bottom:1px solid #e5e7eb;">Type</th>
+                      <th style="padding:8px 6px;font-size:0.98rem;color:#4F46E5;text-align:left;border-bottom:1px solid #e5e7eb;">Value</th>
+                      <th style="padding:8px 6px;font-size:0.98rem;color:#4F46E5;text-align:left;border-bottom:1px solid #e5e7eb;">Amount</th>
+                    </tr>
+                    {% for cart in carts %}
+                    <tr>
+                      <td style="padding:8px 6px;color:#374151;font-size:0.97rem;border-bottom:1px solid #f3f4f6;">{{ cart['title'] }}</td>
+                      <td style="padding:8px 6px;color:#374151;font-size:0.97rem;border-bottom:1px solid #f3f4f6;">{{ cart['property_type'] }}</td>
+                      <td style="padding:8px 6px;color:#374151;font-size:0.97rem;border-bottom:1px solid #f3f4f6;">{{ cart['value'] }}</td>
+                      <td style="padding:8px 6px;color:#374151;font-size:0.97rem;border-bottom:1px solid #f3f4f6;">₦{{ cart['amount'] }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                      <td colspan="3" style="padding:10px 6px;text-align:right;color:#22223b;font-weight:600;font-size:1rem;border-top:2px solid #e5e7eb;">Total</td>
+                      <td style="padding:10px 6px;color:#111827;font-weight:bold;font-size:1rem;border-top:2px solid #e5e7eb;">₦{{ total_amount }}</td>
+                      <td colspan="2"></td>
+                    </tr>
+                  </table>
+                </div>
+                <div style="background:#e0e7ff;padding:16px 20px;border-radius:8px;color:#3730a3;font-size:1rem;margin-bottom:24px;">
+                  If you have any questions, please contact us at <a href="mailto:info@dreamhome.com" style="color:#4F46E5;text-decoration:underline;">info@dreamhome.com</a> or call (123) 456-7890.
+                </div>
+              </td>
+            </tr>
+            <!-- Footer -->
+            <tr>
+              <td style="background:#f3f4f6;padding:24px 24px 16px 24px;text-align:center;font-size:0.95rem;color:#6b7280;">
+                <div style="margin-bottom:8px;">&copy; {{ year }} DreamHome Realty. All rights reserved.</div>
+                <div style="color:#a1a1aa;">123 Real Estate Ave, NY &bull; info@dreamhome.com &bull; (123) 456-7890</div>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
