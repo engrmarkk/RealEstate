@@ -6,48 +6,136 @@
 {% endblock %}
 
 {% block content %}
-<section class="min-h-screen flex items-center justify-center bg-gradient-to-r from-primary-50 to-purple-50 py-12">
-    <div class="max-w-md w-full bg-white rounded-xl shadow-lg overflow-hidden p-8">
-        <div class="text-center mb-8">
-            <h2 class="text-3xl font-serif font-bold text-dark mb-2">Welcome Back</h2>
-            <p class="text-gray-600">Login to your DreamHome account</p>
+<section class="min-h-screen flex items-center justify-center bg-gradient-to-br from-light via-gray-50 to-blue-50 py-12 px-4 relative overflow-hidden">
+    <!-- Decorative Elements -->
+    <div class="absolute inset-0 opacity-5 pointer-events-none">
+        <div class="absolute top-20 right-20 w-96 h-96 bg-secondary rounded-full blur-3xl"></div>
+        <div class="absolute bottom-20 left-20 w-80 h-80 bg-primary rounded-full blur-3xl"></div>
+    </div>
+    
+    <div class="max-w-md w-full relative z-10">
+        <!-- Card Container -->
+        <div class="bg-white rounded-2xl shadow-2xl overflow-hidden border border-gray-100">
+            <!-- Form Section -->
+            <div class="px-8 py-12">
+                <!-- Logo & Title -->
+                <div class="mb-8">
+                    <div class="flex items-center justify-center mb-6">
+                        <div class="w-12 h-12 rounded-lg bg-gradient-to-br from-primary to-accent flex items-center justify-center">
+                            <i class="fas fa-home text-white text-lg"></i>
+                        </div>
+                        <span class="text-primary text-2xl font-serif font-bold ml-3">DreamHome</span>
+                    </div>
+                    <h1 class="text-center text-3xl font-serif font-bold text-dark mb-2">Welcome Back</h1>
+                    <p class="text-center text-gray-600 text-sm">Sign in to your account</p>
+                </div>
+                
+                <form id="loginForm" method="POST" action="/login" novalidate autocomplete="off">
+                    <input type="hidden" name="user_type" id="user_type" value="client">
+                    
+                    <!-- Email Field -->
+                    <div class="mb-5">
+                        <label for="email" class="block text-gray-700 text-sm font-semibold mb-2">Email Address</label>
+                        <div class="relative group">
+                            <input 
+                                type="email" 
+                                id="email" 
+                                name="email" 
+                                required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 text-gray-900 placeholder-gray-500 bg-gray-50 group-hover:bg-white"
+                                placeholder="you@example.com" 
+                                value="{{ email }}"
+                                autocomplete="email"
+                            >
+                            <i class="fas fa-envelope absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 group-focus-within:text-primary transition-colors"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Password Field -->
+                    <div class="mb-2">
+                        <label for="password" class="block text-gray-700 text-sm font-semibold mb-2">Password</label>
+                        <div class="relative group">
+                            <input 
+                                type="password" 
+                                id="password" 
+                                name="password" 
+                                required 
+                                class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-300 text-gray-900 placeholder-gray-500 bg-gray-50 group-hover:bg-white"
+                                placeholder="••••••••"
+                                value="{{ password }}"
+                                autocomplete="current-password"
+                            >
+                            <button 
+                                type="button" 
+                                id="togglePassword" 
+                                class="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary transition-colors duration-300"
+                                tabindex="-1"
+                            >
+                                <i class="fas fa-eye text-sm"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Remember & Forgot Password -->
+                    <div class="flex items-center justify-between mb-8 text-sm">
+                        <label for="remember" class="flex items-center cursor-pointer group">
+                            <input 
+                                type="checkbox" 
+                                id="remember" 
+                                name="remember" 
+                                class="h-4 w-4 text-primary bg-white border-gray-300 rounded focus:ring-primary focus:ring-2 cursor-pointer accent-primary"
+                            >
+                            <span class="ml-2 text-gray-700 group-hover:text-primary transition-colors">Remember me</span>
+                        </label>
+                        <a href="#" class="text-primary hover:text-accent font-medium transition-colors duration-300 hover:underline">Forgot password?</a>
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button 
+                        type="submit" 
+                        id="submitBtn" 
+                        class="w-full bg-gradient-to-r from-primary to-accent text-white font-bold py-3 px-4 rounded-lg transition-all duration-300 shadow-lg opacity-50 cursor-not-allowed disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-xl hover:from-accent hover:to-primary transform hover:scale-105"
+                        disabled
+                    >
+                        Sign In
+                    </button>
+                    
+                    <!-- Divider -->
+                    <div class="relative my-6">
+                        <div class="absolute inset-0 flex items-center">
+                            <div class="w-full border-t border-gray-200"></div>
+                        </div>
+                        <div class="relative flex justify-center text-sm">
+                            <span class="px-2 bg-white text-gray-600">Don't have an account?</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Sign Up Link -->
+                    <a 
+                        href="/register" 
+                        class="block w-full text-center bg-gray-50 hover:bg-gray-100 border-2 border-gray-200 text-primary hover:text-accent font-bold py-3 px-4 rounded-lg transition-all duration-300 transform hover:scale-105"
+                    >
+                        Create Account
+                    </a>
+                </form>
+            </div>
+            
+            <!-- Footer -->
+            <div class="bg-gray-50 px-8 py-4 border-t border-gray-100">
+                <p class="text-center text-xs text-gray-600">
+                    <i class="fas fa-shield-alt text-primary mr-1"></i>
+                    Secure • Encrypted • Private
+                </p>
+            </div>
         </div>
         
-        <form id="loginForm" method="POST" action="/login" novalidate autocomplete="off">
-            <input type="hidden" name="user_type" id="user_type" value="client">
-            <div class="mb-6">
-                <label for="email" class="block text-gray-700 text-sm font-medium mb-2">Email Address</label>
-                <div class="relative">
-                    <input type="email" id="email" name="email" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="you@example.com" value="{{ email }}">
-                </div>
-            </div>
-            
-            <div class="mb-6">
-                <label for="password" class="block text-gray-700 text-sm font-medium mb-2">Password</label>
-                <div class="relative">
-                    <input type="password" id="password" name="password" required class="w-full px-4 py-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary transition-all" placeholder="••••••••" value="{{ password }}">
-                    <button type="button" id="togglePassword" class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-400 hover:text-primary">
-                        <i class="fas fa-eye"></i>
-                    </button>
-                </div>
-            </div>
-            
-            <div class="flex items-center justify-between mb-6">
-                <div class="flex items-center">
-                    <input type="checkbox" id="remember" name="remember" class="h-4 w-4 text-primary focus:ring-primary border-gray-300 rounded">
-                    <label for="remember" class="ml-2 block text-sm text-gray-700">Remember me</label>
-                </div>
-                <a href="#" class="text-sm text-primary hover:text-purple-700">Forgot password?</a>
-            </div>
-            
-            <button type="submit" id="submitBtn" class="w-full bg-gradient-to-r from-primary to-purple-600 text-white py-3 px-4 rounded-lg font-medium transition-all duration-300 shadow-lg opacity-50 cursor-not-allowed" disabled>
-                Login to Account
-            </button>
-            
-            <div class="mt-6 text-center">
-                <p class="text-gray-600">Don't have an account? <a href="/register" class="text-primary hover:text-purple-700 font-medium">Sign up</a></p>
-            </div>
-        </form>
+        <!-- Help Text -->
+        <div class="mt-6 text-center">
+            <p class="text-gray-600 text-sm">
+                Having trouble? 
+                <a href="#" class="text-primary hover:text-accent font-medium transition-colors">Contact support</a>
+            </p>
+        </div>
     </div>
 </section>
 {% endblock %}
@@ -58,45 +146,32 @@ window.addEventListener('DOMContentLoaded', function() {
     const emailInput = document.getElementById('email');
     const passwordInput = document.getElementById('password');
     const submitBtn = document.getElementById('submitBtn');
-    const clientBtn = document.getElementById('clientBtn');
-    const agentBtn = document.getElementById('agentBtn');
-    const userTypeInput = document.getElementById('user_type');
     const togglePasswordBtn = document.getElementById('togglePassword');
+    const loginForm = document.getElementById('loginForm');
 
     function validateForm() {
-        const isEmailFilled = emailInput.value.trim() !== '';
-        const isPasswordFilled = passwordInput.value.trim() !== '';
+        const isEmailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailInput.value.trim());
+        const isPasswordFilled = passwordInput.value.trim().length >= 6;
         
-        if (isEmailFilled && isPasswordFilled) {
+        if (isEmailValid && isPasswordFilled) {
             submitBtn.disabled = false;
             submitBtn.classList.remove('opacity-50', 'cursor-not-allowed');
-            submitBtn.classList.add('hover:from-purple-600', 'hover:to-primary', 'hover:shadow-xl');
         } else {
             submitBtn.disabled = true;
             submitBtn.classList.add('opacity-50', 'cursor-not-allowed');
-            submitBtn.classList.remove('hover:from-purple-600', 'hover:to-primary', 'hover:shadow-xl');
         }
     }
 
+    // Event listeners
     emailInput.addEventListener('input', validateForm);
+    emailInput.addEventListener('blur', validateForm);
     passwordInput.addEventListener('input', validateForm);
+    passwordInput.addEventListener('blur', validateForm);
 
-    if (clientBtn && agentBtn && userTypeInput) {
-        clientBtn.addEventListener('click', () => {
-            userTypeInput.value = 'client';
-            clientBtn.classList.add('active');
-            agentBtn.classList.remove('active');
-        });
-
-        agentBtn.addEventListener('click', () => {
-            userTypeInput.value = 'agent';
-            agentBtn.classList.add('active');
-            clientBtn.classList.remove('active');
-        });
-    }
-
+    // Toggle password visibility
     if (togglePasswordBtn && passwordInput) {
-        togglePasswordBtn.addEventListener('click', function() {
+        togglePasswordBtn.addEventListener('click', function(e) {
+            e.preventDefault();
             const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
             passwordInput.setAttribute('type', type);
             const icon = togglePasswordBtn.querySelector('i');
@@ -107,7 +182,15 @@ window.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Initial validation check
+    // Form submission
+    loginForm.addEventListener('submit', function(e) {
+        if (submitBtn.disabled) {
+            e.preventDefault();
+            return false;
+        }
+    });
+
+    // Initial validation
     validateForm();
 });
 </script>
